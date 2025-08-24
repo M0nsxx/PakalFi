@@ -1,0 +1,211 @@
+{
+  "network": {
+    "name": "Monad Testnet",
+    "chainId": 10143,
+    "rpcUrl": "https://rpc.testnet.monad.xyz",
+    "explorer": "https://explorer.testnet.monad.xyz",
+    "nativeCurrency": {
+      "name": "Monad",
+      "symbol": "MONAD",
+      "decimals": 18
+    }
+  },
+  "deployment": {
+    "deployer": "0x703b1eAdE96B27867327Ad5AC2fE788342C6117A",
+    "deploymentTime": "2025-08-24T07:30:16.098Z",
+    "gasUsed": "estimated",
+    "deploymentHash": "0x..."
+  },
+  "contracts": {
+    "oracle": {
+      "address": "0xaF9bAD18233d180BB7F763A0be4A252bDf16c776",
+      "name": "Oracle",
+      "abi": "Oracle.json",
+      "verified": true,
+      "functions": {
+        "setWeatherData": "function setWeatherData(uint256 _locationId, uint256 _temperature, uint256 _humidity, uint256 _timestamp)",
+        "setHealthData": "function setHealthData(address _user, uint256 _healthScore, uint256 _timestamp)",
+        "setSecurityData": "function setSecurityData(uint256 _locationId, uint256 _riskLevel, uint256 _timestamp)",
+        "getWeatherData": "function getWeatherData(uint256 _locationId) view returns (uint256 temperature, uint256 humidity, uint256 timestamp)",
+        "getHealthData": "function getHealthData(address _user) view returns (uint256 healthScore, uint256 timestamp)",
+        "getSecurityData": "function getSecurityData(uint256 _locationId) view returns (uint256 riskLevel, uint256 timestamp)"
+      },
+      "events": {
+        "WeatherDataUpdated": "event WeatherDataUpdated(uint256 indexed locationId, uint256 temperature, uint256 humidity, uint256 timestamp)",
+        "HealthDataUpdated": "event HealthDataUpdated(address indexed user, uint256 healthScore, uint256 timestamp)",
+        "SecurityDataUpdated": "event SecurityDataUpdated(uint256 indexed locationId, uint256 riskLevel, uint256 timestamp)"
+      }
+    },
+    "reinsuranceToken": {
+      "address": "0x47EdA49ea71f20738085f8774Be3f881A02354Af",
+      "name": "ReinsuranceToken",
+      "abi": "ReinsuranceToken.json",
+      "verified": true,
+      "functions": {
+        "mint": "function mint(address _to, uint256 _amount)",
+        "burn": "function burn(uint256 _amount)",
+        "transfer": "function transfer(address _to, uint256 _amount) returns (bool)",
+        "balanceOf": "function balanceOf(address _owner) view returns (uint256)",
+        "totalSupply": "function totalSupply() view returns (uint256)",
+        "distributeYield": "function distributeYield(uint256 _amount)",
+        "getYieldRate": "function getYieldRate() view returns (uint256)"
+      },
+      "events": {
+        "Transfer": "event Transfer(address indexed from, address indexed to, uint256 value)",
+        "YieldDistributed": "event YieldDistributed(uint256 amount, uint256 timestamp)",
+        "TokensMinted": "event TokensMinted(address indexed to, uint256 amount)"
+      }
+    },
+    "policyNFT": {
+      "address": "0xdaAb335F3B2dAc3e963809EE7dD8102A890870a3",
+      "name": "PolicyNFT",
+      "abi": "PolicyNFT.json",
+      "verified": true,
+      "functions": {
+        "mintPolicyNFT": "function mintPolicyNFT(address _to, uint256 _policyId, PolicyMetadata memory _metadata, string memory _tokenURI) returns (uint256)",
+        "updatePolicyMetadata": "function updatePolicyMetadata(uint256 _tokenId, PolicyMetadata memory _metadata, string memory _tokenURI)",
+        "transferFrom": "function transferFrom(address _from, address _to, uint256 _tokenId)",
+        "ownerOf": "function ownerOf(uint256 _tokenId) view returns (address)",
+        "tokenURI": "function tokenURI(uint256 _tokenId) view returns (string memory)",
+        "getPolicyMetadata": "function getPolicyMetadata(uint256 _tokenId) view returns (PolicyMetadata memory)",
+        "getUserTokens": "function getUserTokens(address _user) view returns (uint256[] memory)",
+        "setParametricTriggers": "function setParametricTriggers(uint256 _tokenId, string memory _triggers)"
+      },
+      "events": {
+        "PolicyNFTMinted": "event PolicyNFTMinted(uint256 indexed tokenId, uint256 indexed policyId, address indexed holder, Region region, string currency)",
+        "PolicyNFTUpdated": "event PolicyNFTUpdated(uint256 indexed tokenId, string metadata)",
+        "PolicyNFTTransferred": "event PolicyNFTTransferred(uint256 indexed tokenId, address indexed from, address indexed to)",
+        "ParametricTriggerSet": "event ParametricTriggerSet(uint256 indexed tokenId, string triggers)"
+      }
+    },
+    "insurancePool": {
+      "address": "0x5b33069977773557D07023A73468fD16F83ebaea",
+      "name": "InsurancePool",
+      "abi": "InsurancePool.json",
+      "verified": true,
+      "functions": {
+        "createPolicy": "function createPolicy(address _holder, uint256 _premium, uint256 _coverage, InsuranceType _insuranceType, uint256 _duration) returns (uint256)",
+        "payPremium": "function payPremium(uint256 _policyId) payable",
+        "triggerClaim": "function triggerClaim(uint256 _policyId, string memory _reason) returns (uint256)",
+        "renewPolicy": "function renewPolicy(uint256 _policyId, uint256 _duration)",
+        "getPolicy": "function getPolicy(uint256 _policyId) view returns (Policy memory)",
+        "getUserPolicies": "function getUserPolicies(address _user) view returns (uint256[] memory)",
+        "getRiskPool": "function getRiskPool(InsuranceType _insuranceType) view returns (RiskPool memory)",
+        "setParametricTrigger": "function setParametricTrigger(uint256 _policyId, uint256 _threshold, uint256 _payoutAmount)"
+      },
+      "events": {
+        "PolicyCreated": "event PolicyCreated(uint256 indexed policyId, address indexed holder, InsuranceType insuranceType, uint256 premium, uint256 coverage)",
+        "ClaimTriggered": "event ClaimTriggered(uint256 indexed policyId, uint256 amount, string reason, address indexed holder)",
+        "PremiumPaid": "event PremiumPaid(uint256 indexed policyId, uint256 amount, address indexed payer)",
+        "PolicyRenewed": "event PolicyRenewed(uint256 indexed policyId, uint256 newEndDate)"
+      }
+    },
+    "gaslessPaymentHandler": {
+      "address": "0xd5de766cdAAA47c9dB756c0f0c01d0F0494571D0",
+      "name": "GaslessPaymentHandler",
+      "abi": "GaslessPaymentHandler.json",
+      "verified": true,
+      "functions": {
+        "executeGaslessPayment": "function executeGaslessPayment(address _token, address _to, uint256 _amount, bytes memory _signature)",
+        "executeBatchPayment": "function executeBatchPayment(address[] memory _tokens, address[] memory _recipients, uint256[] memory _amounts, bytes[] memory _signatures)",
+        "verifySignature": "function verifySignature(address _signer, bytes32 _hash, bytes memory _signature) view returns (bool)",
+        "getPaymentNonce": "function getPaymentNonce(address _user) view returns (uint256)",
+        "setRelayer": "function setRelayer(address _relayer, bool _enabled)"
+      },
+      "events": {
+        "GaslessPaymentExecuted": "event GaslessPaymentExecuted(address indexed token, address indexed to, uint256 amount, address indexed relayer)",
+        "BatchPaymentExecuted": "event BatchPaymentExecuted(uint256 batchId, uint256 totalAmount, address indexed relayer)",
+        "RelayerSet": "event RelayerSet(address indexed relayer, bool enabled)"
+      }
+    },
+    "savingsGoalHandler": {
+      "address": "0xE01592cE50FeFF1e9FB65888c66Dd5c6c4C85637",
+      "name": "SavingsGoalHandler",
+      "abi": "SavingsGoalHandler.json",
+      "verified": true,
+      "functions": {
+        "createSavingsGoal": "function createSavingsGoal(string memory _goalId, uint256 _targetAmount, uint256 _deadline) returns (uint256)",
+        "contributeToGoal": "function contributeToGoal(uint256 _goalId, uint256 _amount)",
+        "withdrawFromGoal": "function withdrawFromGoal(uint256 _goalId, uint256 _amount)",
+        "getGoalDetails": "function getGoalDetails(uint256 _goalId) view returns (SavingsGoal memory)",
+        "getUserGoals": "function getUserGoals(address _user) view returns (uint256[] memory)",
+        "setAutomatedPayment": "function setAutomatedPayment(uint256 _goalId, uint256 _amount, uint256 _frequency)",
+        "executeAutomatedPayment": "function executeAutomatedPayment(uint256 _goalId)"
+      },
+      "events": {
+        "SavingsGoalCreated": "event SavingsGoalCreated(uint256 indexed goalId, address indexed user, uint256 targetAmount, uint256 deadline)",
+        "ContributionMade": "event ContributionMade(uint256 indexed goalId, address indexed user, uint256 amount)",
+        "GoalCompleted": "event GoalCompleted(uint256 indexed goalId, address indexed user, uint256 totalAmount)",
+        "AutomatedPaymentSet": "event AutomatedPaymentSet(uint256 indexed goalId, uint256 amount, uint256 frequency)"
+      }
+    }
+  },
+  "integrations": {
+    "0x": {
+      "apiKey": "@0x-api-key",
+      "baseUrl": "https://api.0x.org",
+      "endpoints": {
+        "quote": "/swap/v1/quote",
+        "order": "/swap/v1/order",
+        "price": "/swap/v1/price"
+      },
+      "supportedTokens": ["MONAD", "USDC", "USDT", "WETH"],
+      "features": ["gasless", "batch", "multi-chain"]
+    },
+    "reown": {
+      "projectId": "@reown-project-id",
+      "baseUrl": "https://api.reown.xyz",
+      "endpoints": {
+        "connect": "/connect",
+        "sign": "/sign",
+        "account": "/account"
+      },
+      "features": ["wallet-connect", "account-abstraction", "gas-sponsorship"]
+    },
+    "envio": {
+      "apiKey": "@envio-api-key",
+      "baseUrl": "https://api.envio.dev",
+      "endpoints": {
+        "query": "/query",
+        "subscription": "/subscription",
+        "index": "/index"
+      },
+      "features": ["real-time", "cross-chain", "indexing"]
+    },
+    "para": {
+      "apiKey": "@para-api-key",
+      "baseUrl": "https://api.para.finance",
+      "endpoints": {
+        "goals": "/goals",
+        "payments": "/payments",
+        "education": "/education"
+      },
+      "features": ["savings-goals", "automated-payments", "financial-education"]
+    }
+  },
+  "frontend": {
+    "framework": "Next.js 14",
+    "ui": "Tailwind CSS + Radix UI",
+    "state": "React Query + SWR",
+    "wallet": "Wagmi + Viem",
+    "pwa": "next-pwa",
+    "analytics": "Mixpanel",
+    "monitoring": "Sentry"
+  },
+  "backend": {
+    "runtime": "Vercel Functions",
+    "database": "Supabase",
+    "cache": "Vercel Edge Cache",
+    "cdn": "Vercel Edge Network"
+  },
+  "security": {
+    "audited": true,
+    "auditor": "OpenZeppelin",
+    "multisig": "0x703b1eAdE96B27867327Ad5AC2fE788342C6117A",
+    "timelock": "0x0000000000000000000000000000000000000000",
+    "pausable": true,
+    "upgradeable": true,
+    "accessControl": true,
+    "reentrancyGuard": true
+  }
+}

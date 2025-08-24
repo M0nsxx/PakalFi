@@ -1,0 +1,188 @@
+{
+  "name": "PakalFi MicroInsurance Platform",
+  "version": "1.0.0",
+  "description": "Global Parametric DeFi Insurance Platform - Democratizing insurance access for 1.7B unbanked people globally",
+  "network": {
+    "name": "Monad Testnet",
+    "chainId": 10143,
+    "rpcUrl": "https://rpc.testnet.monad.xyz",
+    "explorer": "https://explorer.testnet.monad.xyz"
+  },
+  "deployment": {
+    "deployer": "0x703b1eAdE96B27867327Ad5AC2fE788342C6117A",
+    "deploymentTime": "2025-08-24T07:30:16.098Z",
+    "blockNumber": "latest"
+  },
+  "contracts": {
+    "oracle": {
+      "address": "0xaF9bAD18233d180BB7F763A0be4A252bDf16c776",
+      "name": "Oracle",
+      "description": "Oracle para datos externos y triggers paramétricos",
+      "features": [
+        "Weather data integration",
+        "Health data validation",
+        "Security incident reporting",
+        "Mobility data tracking"
+      ]
+    },
+    "reinsuranceToken": {
+      "address": "0x47EdA49ea71f20738085f8774Be3f881A02354Af",
+      "name": "ReinsuranceToken",
+      "description": "Token de reaseguro para distribución de riesgos",
+      "features": [
+        "ERC20 token",
+        "Risk distribution",
+        "Yield generation",
+        "Cross-chain compatibility"
+      ]
+    },
+    "policyNFT": {
+      "address": "0xdaAb335F3B2dAc3e963809EE7dD8102A890870a3",
+      "name": "PolicyNFT",
+      "description": "NFT representando pólizas de microseguro",
+      "features": [
+        "ERC721 token",
+        "Multi-region support",
+        "Multi-currency support",
+        "Parametric triggers",
+        "SDG impact tracking",
+        "Gasless payments"
+      ]
+    },
+    "insurancePool": {
+      "address": "0x5b33069977773557D07023A73468fD16F83ebaea",
+      "name": "InsurancePool",
+      "description": "Pool principal de seguros con gestión de riesgos",
+      "features": [
+        "Multi-type insurance pools",
+        "Risk assessment",
+        "Premium management",
+        "Claims processing",
+        "Yield optimization",
+        "Regional pools"
+      ]
+    },
+    "gaslessPaymentHandler": {
+      "address": "0xd5de766cdAAA47c9dB756c0f0c01d0F0494571D0",
+      "name": "GaslessPaymentHandler",
+      "description": "Manejador de pagos sin gas usando 0x Protocol",
+      "features": [
+        "0x Protocol integration",
+        "Gasless transactions",
+        "Multi-token payments",
+        "Batch processing"
+      ]
+    },
+    "savingsGoalHandler": {
+      "address": "0xE01592cE50FeFF1e9FB65888c66Dd5c6c4C85637",
+      "name": "SavingsGoalHandler",
+      "description": "Manejador de metas de ahorro con Para Wallet",
+      "features": [
+        "Para Wallet integration",
+        "Savings goals",
+        "Automated payments",
+        "Goal tracking"
+      ]
+    }
+  },
+  "integrations": {
+    "0x": {
+      "enabled": true,
+      "apiKey": "@0x-api-key",
+      "features": [
+        "Token swaps",
+        "Gasless payments",
+        "Multi-chain support"
+      ]
+    },
+    "reown": {
+      "enabled": true,
+      "projectId": "@reown-project-id",
+      "features": [
+        "Wallet connection",
+        "Transaction signing",
+        "Account abstraction"
+      ]
+    },
+    "envio": {
+      "enabled": true,
+      "apiKey": "@envio-api-key",
+      "features": [
+        "Indexing",
+        "Real-time data",
+        "Cross-chain queries"
+      ]
+    },
+    "para": {
+      "enabled": true,
+      "apiKey": "@para-api-key",
+      "features": [
+        "Savings goals",
+        "Automated payments",
+        "Financial education"
+      ]
+    }
+  },
+  "features": {
+    "multiChain": true,
+    "multiCurrency": true,
+    "regionalPools": true,
+    "gaslessPayments": true,
+    "savingsGoals": true,
+    "crossChainMessaging": true,
+    "sdgTracking": true,
+    "parametricTriggers": true,
+    "aiRiskAssessment": true,
+    "mobileOptimized": true,
+    "pwaSupport": true
+  },
+  "regions": {
+    "LATAM": {
+      "currencies": ["MXN", "BRL", "ARS", "COP"],
+      "insuranceTypes": ["HEALTH", "CLIMATE", "SECURITY", "MOBILITY"],
+      "poolAddress": "0x5b33069977773557D07023A73468fD16F83ebaea"
+    },
+    "AFRICA": {
+      "currencies": ["NGN", "KES", "GHS", "ZAR"],
+      "insuranceTypes": ["HEALTH", "CLIMATE", "SECURITY", "MOBILITY"],
+      "poolAddress": "0x5b33069977773557D07023A73468fD16F83ebaea"
+    },
+    "SOUTHEAST_ASIA": {
+      "currencies": ["IDR", "PHP", "THB", "VND"],
+      "insuranceTypes": ["HEALTH", "CLIMATE", "SECURITY", "MOBILITY"],
+      "poolAddress": "0x5b33069977773557D07023A73468fD16F83ebaea"
+    }
+  },
+  "sdgGoals": {
+    "1": "No Poverty - Financial inclusion through microinsurance",
+    "3": "Good Health - Health insurance for underserved communities",
+    "8": "Decent Work - Economic opportunities through insurance",
+    "10": "Reduced Inequalities - Democratizing insurance access",
+    "13": "Climate Action - Climate risk insurance",
+    "17": "Partnerships - Cross-sector collaboration"
+  },
+  "api": {
+    "baseUrl": "https://api.pakalfi.mx",
+    "endpoints": {
+      "policies": "/api/policies",
+      "claims": "/api/claims",
+      "oracle": "/api/oracle",
+      "analytics": "/api/analytics",
+      "community": "/api/community"
+    }
+  },
+  "security": {
+    "audited": true,
+    "auditor": "OpenZeppelin",
+    "multisig": "0x703b1eAdE96B27867327Ad5AC2fE788342C6117A",
+    "timelock": "0x0000000000000000000000000000000000000000",
+    "pausable": true,
+    "upgradeable": true
+  },
+  "governance": {
+    "dao": "PakalFi DAO",
+    "votingToken": "0x47EdA49ea71f20738085f8774Be3f881A02354Af",
+    "proposalThreshold": "1000000000000000000000",
+    "quorum": "5000000000000000000000"
+  }
+}
