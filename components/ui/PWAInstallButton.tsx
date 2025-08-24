@@ -1,7 +1,7 @@
 'use client'
 
 import { usePWAInstall } from '@/hooks/usePWAInstall'
-import { Download, CheckCircle } from 'lucide-react'
+import { Download, CheckCircle, Smartphone, Apple } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 interface PWAInstallButtonProps {
@@ -9,7 +9,7 @@ interface PWAInstallButtonProps {
 }
 
 export function PWAInstallButton({ className = '' }: PWAInstallButtonProps) {
-  const { isInstallable, isInstalled, installPWA } = usePWAInstall()
+  const { isInstallable, isInstalled, installPWA, isIOS } = usePWAInstall()
   
   // En desarrollo, siempre mostrar el botón para testing
   const isDevelopment = process.env.NODE_ENV === 'development'
@@ -24,13 +24,30 @@ export function PWAInstallButton({ className = '' }: PWAInstallButtonProps) {
         disabled
       >
         <CheckCircle className="w-3 h-3" />
-        <span>Installed</span>
+        <span>App Instalada</span>
       </motion.button>
     )
   }
 
   if (!shouldShow) {
-    return null // No mostrar el botón si no es instalable y no estamos en desarrollo
+    return null
+  }
+
+  const getIcon = () => {
+    if (isIOS) return <Apple className="w-3 h-3" />
+    return <Download className="w-3 h-3" />
+  }
+
+  const getText = () => {
+    if (isDevelopment) return 'Instalar PWA (Dev)'
+    if (isIOS) return 'Agregar a Inicio'
+    return 'Instalar App'
+  }
+
+  const getColors = () => {
+    if (isDevelopment) return 'bg-gradient-to-r from-orange-500 to-orange-600 hover:shadow-orange-500/25'
+    if (isIOS) return 'bg-gradient-to-r from-blue-500 to-blue-600 hover:shadow-blue-500/25'
+    return 'bg-gradient-to-r from-green-500 to-emerald-600 hover:shadow-green-500/25'
   }
 
   return (
@@ -40,14 +57,11 @@ export function PWAInstallButton({ className = '' }: PWAInstallButtonProps) {
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={isDevelopment ? () => console.log('PWA install clicked in development') : installPWA}
-      className={`flex items-center space-x-2 ${
-        isDevelopment 
-          ? 'bg-gradient-to-r from-orange-500 to-orange-600' 
-          : 'bg-gradient-to-r from-purple-500 to-purple-600'
-      } text-white px-3 py-2 rounded-full font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all text-sm ${className}`}
+      className={`flex items-center space-x-2 ${getColors()} text-white px-3 py-2 rounded-full font-medium hover:shadow-lg transition-all text-sm ${className}`}
+      title={isIOS ? 'Agregar PakalFi a la pantalla de inicio' : 'Instalar PakalFi como aplicación'}
     >
-      <Download className="w-3 h-3" />
-      <span>{isDevelopment ? 'Install PWA (Dev)' : 'Install PWA'}</span>
+      {getIcon()}
+      <span>{getText()}</span>
     </motion.button>
   )
 }

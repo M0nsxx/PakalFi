@@ -91,18 +91,42 @@ export default async function RootLayout({
           rel="stylesheet"
         />
         {/* PWA Configuration */}
+        <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#10b981" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="MicroInsurance" />
+        <meta name="apple-mobile-web-app-title" content="PakalFi" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="msapplication-TileColor" content="#10b981" />
         <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        <meta name="application-name" content="PakalFi" />
         
-        {/* PWA Icons */}
+        {/* Apple Touch Icons */}
+        <link rel="apple-touch-icon" href="/icon-180x180.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="/icon-57x57.png" />
+        <link rel="apple-touch-icon" sizes="60x60" href="/icon-60x60.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="/icon-72x72.png" />
+        <link rel="apple-touch-icon" sizes="76x76" href="/icon-76x76.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="/icon-114x114.png" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/icon-120x120.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="/icon-144x144.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icon-180x180.png" />
+        
+        {/* Favicons */}
         <link rel="icon" type="image/png" sizes="32x32" href="/icon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/icon-16x16.png" />
+        <link rel="shortcut icon" href="/icon-32x32.png" />
+        
+        {/* Apple Splash Screens */}
+        <link rel="apple-touch-startup-image" href="/splash-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" />
+        <link rel="apple-touch-startup-image" href="/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" />
+        <link rel="apple-touch-startup-image" href="/splash-828x1792.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" />
+        <link rel="apple-touch-startup-image" href="/splash-1125x2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" />
+        <link rel="apple-touch-startup-image" href="/splash-1242x2688.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
         <link rel="apple-touch-icon" sizes="180x180" href="/icon-192x192.png" />
         <link rel="apple-touch-icon" sizes="152x152" href="/icon-152x152.png" />
         <link rel="apple-touch-icon" sizes="144x144" href="/icon-144x144.png" />

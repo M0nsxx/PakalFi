@@ -1,15 +1,17 @@
 {
-  "name": "PakalFi - Insurance for Everyone",
+  "name": "PakalFi - Seguro para Todos",
   "short_name": "PakalFi",
-  "description": "Democratizing access to insurance in Mexico with blockchain technology. Intelligent, transparent, and accessible protection for everyone.",
+  "description": "Democratizando el acceso a seguros en México con tecnología blockchain. Protección inteligente, transparente y accesible para todos. Desde $12 MXN/mes.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#10b981",
   "orientation": "portrait-primary",
   "scope": "/",
-  "lang": "en",
-  "categories": ["finance", "business", "insurance"],
+  "lang": "es",
+  "categories": ["finance", "business", "insurance", "fintech"],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icon-16x16.png",
@@ -150,9 +152,9 @@
   ],
   "shortcuts": [
     {
-      "name": "Get Quote",
-      "short_name": "Quote",
-      "description": "Get an insurance quote",
+      "name": "Cotizar Seguro",
+      "short_name": "Cotizar",
+      "description": "Obtén una cotización de seguro al instante",
       "url": "/calculadora",
       "icons": [
         {
@@ -162,9 +164,9 @@
       ]
     },
     {
-      "name": "My Policies",
-      "short_name": "Policies",
-      "description": "View your insurance policies",
+      "name": "Mis Pólizas",
+      "short_name": "Pólizas",
+      "description": "Ve tus pólizas de seguro activas",
       "url": "/dashboard",
       "icons": [
         {
@@ -174,10 +176,22 @@
       ]
     },
     {
-      "name": "File Claim",
-      "short_name": "Claim",
-      "description": "File an insurance claim",
-      "url": "/claims",
+      "name": "Demo Hackathon",
+      "short_name": "Demo",
+      "description": "Prueba las funciones de 0x Protocol y Para",
+      "url": "/hackathon-demo",
+      "icons": [
+        {
+          "src": "/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Seguro de Salud",
+      "short_name": "Salud",
+      "description": "Contrata seguro de salud desde $12 MXN/mes",
+      "url": "/salud",
       "icons": [
         {
           "src": "/icon-96x96.png",
