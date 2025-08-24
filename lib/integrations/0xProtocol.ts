@@ -1,6 +1,5 @@
 import { ethers } from 'ethers';
 import { getContracts } from '@/config/contracts';
-import { useState } from 'react';
 
 export interface PremiumPayment {
   policyHolder: string;
@@ -23,6 +22,14 @@ export interface ReinsuranceSettlement {
   amount: string;
   fromCurrency: string;
   toCurrency: string;
+  region?: string;
+}
+
+export interface ClaimPayout {
+  claimId: string;
+  policyHolder: string;
+  payoutAmount: string;
+  claimType: string;
   region?: string;
 }
 
@@ -425,62 +432,4 @@ export class ZeroXInsuranceIntegration {
   }
 }
 
-// Hook for React components
-export function use0xInsurance() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const zeroX = new ZeroXInsuranceIntegration();
-
-  const payPremiumGasless = async (premium: PremiumPayment) => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const result = await zeroX.executeGaslessPremiumPayment(premium);
-      return result;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const processClaimPayout = async (claim: ClaimPayout) => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const result = await zeroX.processGaslessClaim(claim);
-      return result;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const settleReinsurance = async (settlement: ReinsuranceSettlement) => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const result = await zeroX.settleReinsurance(settlement);
-      return result;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return { 
-    payPremiumGasless, 
-    processClaimPayout, 
-    settleReinsurance, 
-    loading, 
-    error 
-  };
-}
+// React hook has been moved to hooks/use0xInsurance.tsx to avoid server-side issues

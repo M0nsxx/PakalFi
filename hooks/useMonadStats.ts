@@ -5,6 +5,10 @@ interface MonadStats {
   totalTransactions: number
   isConnected: boolean
   blockHeight: number
+  networkId?: string
+  gasPrice?: number
+  lastUpdated?: string
+  rpcUrl?: string
 }
 
 export function useMonadStats() {
@@ -19,23 +23,25 @@ export function useMonadStats() {
   useEffect(() => {
     const fetchMonadStats = async () => {
       try {
-        // Fetch Monad stats from our API route
-        const response = await fetch('/api/monad/stats')
+        // Conectar realmente con Monad testnet
+        const response = await fetch('/api/monad')
         
         if (!response.ok) {
-          throw new Error('Failed to fetch Monad stats from API')
+          throw new Error(`HTTP ${response.status}: Failed to connect to Monad`)
         }
 
         const data = await response.json()
         setStats(data)
       } catch (error) {
-        console.error('Error fetching Monad stats:', error)
-        // Fallback to base stats if API fails
+        console.error('Error connecting to Monad testnet:', error)
+        // Fallback cuando falla la conexión real
         setStats({
-          tps: 8190,
-          totalTransactions: 9000,
+          tps: 0,
+          totalTransactions: 8098038,
           isConnected: false,
-          blockHeight: 1500000
+          blockHeight: 0,
+          networkId: '10143',
+          gasPrice: 0
         })
       } finally {
         setLoading(false)
@@ -44,8 +50,8 @@ export function useMonadStats() {
 
     fetchMonadStats()
     
-    // Actualizar cada 30 segundos
-    const interval = setInterval(fetchMonadStats, 30000)
+    // Actualizar cada 15 segundos para datos en tiempo real
+    const interval = setInterval(fetchMonadStats, 15000)
     
     return () => clearInterval(interval)
   }, [])

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { use0xInsurance } from '@/lib/integrations/0xProtocol';
+import { use0xInsurance } from '@/hooks/use0xInsurance';
+import { PremiumPayment, ClaimPayout } from '@/lib/integrations/0xProtocol';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
