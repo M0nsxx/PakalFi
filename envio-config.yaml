@@ -1,0 +1,269 @@
+# Envio HyperIndex Configuration for Monad Consumer Fintech Analytics
+# Bounty: Best Real-Time Payments or Consumer Fintech Dashboard ($2,000)
+
+name: "microco-consumer-fintech-analytics"
+description: "Real-time consumer fintech analytics dashboard for Monad blockchain"
+version: "1.0.0"
+
+# Network Configuration
+networks:
+  - name: "monad-testnet"
+    chainId: 10143
+    rpcUrl: "https://rpc.testnet.monad.xyz"
+    startBlock: 1
+    contracts:
+      - name: "InsurancePool"
+        address: "0x..."
+        abi: "InsurancePool.json"
+      - name: "GaslessPaymentHandler"
+        address: "0x..."
+        abi: "GaslessPaymentHandler.json"
+      - name: "PolicyNFT"
+        address: "0x..."
+        abi: "PolicyNFT.json"
+
+# Event Handlers Configuration
+eventHandlers:
+  - event: "PaymentProcessed"
+    handler: "handlePaymentProcessed"
+    contract: "GaslessPaymentHandler"
+    
+  - event: "PolicyCreated"
+    handler: "handlePolicyCreated"
+    contract: "InsurancePool"
+    
+  - event: "ClaimFiled"
+    handler: "handleClaimFiled"
+    contract: "InsurancePool"
+    
+  - event: "SwapExecuted"
+    handler: "handleSwapExecuted"
+    contract: "GaslessPaymentHandler"
+
+# GraphQL Schema
+schema:
+  entities:
+    - name: "PaymentTransaction"
+      fields:
+        - name: "id"
+          type: "String"
+        - name: "amount"
+          type: "BigDecimal"
+        - name: "type"
+          type: "String"
+        - name: "status"
+          type: "String"
+        - name: "timestamp"
+          type: "BigInt"
+        - name: "from"
+          type: "String"
+        - name: "to"
+          type: "String"
+        - name: "gasUsed"
+          type: "BigDecimal"
+        - name: "network"
+          type: "String"
+    
+    - name: "ConsumerMetrics"
+      fields:
+        - name: "totalUsers"
+          type: "BigInt"
+        - name: "activeWallets"
+          type: "BigInt"
+        - name: "totalVolume"
+          type: "BigDecimal"
+        - name: "averageTransaction"
+          type: "BigDecimal"
+        - name: "successRate"
+          type: "BigDecimal"
+        - name: "gasSpent"
+          type: "BigDecimal"
+        - name: "crossChainTransfers"
+          type: "BigInt"
+        - name: "mobileTransactions"
+          type: "BigInt"
+    
+    - name: "RealTimeData"
+      fields:
+        - name: "tps"
+          type: "BigInt"
+        - name: "activeUsers"
+          type: "BigInt"
+        - name: "pendingTransactions"
+          type: "BigInt"
+        - name: "recentTransactions"
+          type: "[PaymentTransaction!]!"
+        - name: "topMerchants"
+          type: "[Merchant!]!"
+        - name: "networkStats"
+          type: "[NetworkStats!]!"
+
+# API Configuration
+api:
+  graphql:
+    enabled: true
+    endpoint: "/graphql"
+    playground: true
+  
+  rest:
+    enabled: true
+    endpoint: "/api/v1"
+
+# Real-time Features
+realtime:
+  subscriptions:
+    enabled: true
+    events:
+      - "PaymentProcessed"
+      - "PolicyCreated"
+      - "ClaimFiled"
+      - "SwapExecuted"
+  
+  websockets:
+    enabled: true
+    endpoint: "/ws"
+
+# Performance Configuration
+performance:
+  batchSize: 1000
+  maxConcurrentRequests: 10
+  cacheEnabled: true
+  cacheTTL: 300 # 5 minutes
+
+# Monitoring & Analytics
+monitoring:
+  metrics:
+    enabled: true
+    endpoint: "/metrics"
+  
+  logging:
+    level: "info"
+    format: "json"
+  
+  alerts:
+    enabled: true
+    channels:
+      - type: "webhook"
+        url: "https://hooks.slack.com/services/..."
+      - type: "email"
+        recipients: ["team@microco.com"]
+
+# Consumer Fintech Specific Queries
+queries:
+  - name: "getConsumerMetrics"
+    description: "Get real-time consumer fintech metrics"
+    query: |
+      query GetConsumerMetrics {
+        consumerMetrics {
+          totalUsers
+          activeWallets
+          totalVolume
+          averageTransaction
+          successRate
+          gasSpent
+          crossChainTransfers
+          mobileTransactions
+        }
+      }
+  
+  - name: "getRealTimeData"
+    description: "Get real-time payment and transaction data"
+    query: |
+      query GetRealTimeData {
+        realTimeData {
+          tps
+          activeUsers
+          pendingTransactions
+          recentTransactions {
+            id
+            amount
+            type
+            status
+            timestamp
+            from
+            to
+            gasUsed
+            network
+          }
+          topMerchants {
+            name
+            volume
+            transactions
+          }
+          networkStats {
+            network
+            volume
+            users
+          }
+        }
+      }
+  
+  - name: "getPaymentAnalytics"
+    description: "Get payment analytics for consumer fintech"
+    query: |
+      query GetPaymentAnalytics($timeframe: String!) {
+        paymentAnalytics(timeframe: $timeframe) {
+          totalPayments
+          totalVolume
+          averageAmount
+          successRate
+          gasEfficiency
+          mobileUsage
+          crossChainVolume
+        }
+      }
+
+# Bounty Compliance
+bounty:
+  name: "Best Real-Time Payments or Consumer Fintech Dashboard"
+  amount: "$2,000"
+  requirements:
+    - "Must use HyperIndex or HyperSync"
+    - "Must focus on Monad on-chain data"
+    - "Must be a live, deployed dashboard"
+    - "Should relate to payments or consumer fintech"
+  
+  compliance:
+    hyperindex: true
+    monadData: true
+    liveDashboard: true
+    consumerFintech: true
+    realTimeAnalytics: true
+    paymentFocus: true
+
+# Deployment Configuration
+deployment:
+  environment: "production"
+  region: "us-east-1"
+  scaling:
+    minInstances: 2
+    maxInstances: 10
+    targetCPUUtilization: 70
+  
+  healthCheck:
+    enabled: true
+    endpoint: "/health"
+    interval: 30
+    timeout: 5
+    healthyThreshold: 2
+    unhealthyThreshold: 3
+
+# Security Configuration
+security:
+  authentication:
+    enabled: true
+    type: "api-key"
+  
+  rateLimiting:
+    enabled: true
+    requestsPerMinute: 1000
+  
+  cors:
+    enabled: true
+    origins: ["https://microco.com", "https://app.microco.com"]
+
+# Documentation
+documentation:
+  apiDocs: "https://docs.microco.com/api"
+  dashboardDocs: "https://docs.microco.com/dashboard"
+  bountyDocs: "https://docs.envio.dev/docs/HyperIndex/overview"

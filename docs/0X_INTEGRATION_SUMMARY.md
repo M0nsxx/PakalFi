@@ -1,4 +1,4 @@
-# 0x Protocol Integration Summary - Monad Hackathon 2024
+# 0x Protocol Integration Summary - Monad Hackathon 2025
 
 ## 🏆 Bounty: $4,000 USD - Best Use of 0x Swap API or Gasless API on Monad
 

@@ -21,16 +21,19 @@ export const monadTestnet = {
   },
 } as const
 
-// Get projectId from https://dashboard.reown.com
-export const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 'cb15092896929e9aa4d5afdc5d03b86f'
+// Get projectId from environment variables
+// Priority: NEXT_PUBLIC_REOWN_PROJECT_ID > NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID > fallback
+export const projectId = process.env.NEXT_PUBLIC_REOWN_PROJECT_ID || 
+                        process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || 
+                        'cb15092896929e9aa4d5afdc5d03b86f'
 
 if (!projectId) {
-  throw new Error('Project ID is not defined')
+  throw new Error('Project ID is not defined. Please set NEXT_PUBLIC_REOWN_PROJECT_ID or NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID')
 }
 
 export const networks = [monadTestnet]
 
-//Set up the Wagmi Adapter (Config)
+// Set up the Wagmi Adapter (Config)
 export const wagmiAdapter = new WagmiAdapter({
   storage: createStorage({
     storage: cookieStorage

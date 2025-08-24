@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { Shield, Heart, Cloud, Car, ChevronRight, Users, TrendingUp, Zap, CheckCircle, CloudRain, DollarSign, Smartphone, Globe, Award } from 'lucide-react'
 import { PremiumCalculator } from '@/components/insurance/PremiumCalculator'
 import { RiskAssessment } from '@/components/insurance/RiskAssessment'
+import { ReownDemo } from '@/components/ui/ReownDemo'
 
 export default function Landing() {
   const [isMounted, setIsMounted] = useState(false)
@@ -28,7 +29,7 @@ export default function Landing() {
   }, [])
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+    <div className="min-h-screen bg-gray-900">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-16 lg:pt-20">
         <div className="absolute inset-0 bg-aztec-pattern opacity-10"></div>
@@ -158,7 +159,7 @@ export default function Landing() {
       </motion.div>
 
       {/* Global Markets Section */}
-      <section className="py-20 bg-black/30">
+      <section className="py-20 bg-gray-800">
         <div className="container mx-auto px-4">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -417,7 +418,7 @@ export default function Landing() {
       </section>
 
       {/* Calculator Section */}
-      <section className="py-20 bg-black/30">
+      <section className="py-20 bg-gray-800">
         <div className="container mx-auto px-4">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -448,8 +449,11 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Reown AppKit Demo */}
+      <ReownDemo />
+
       {/* Community Stats */}
-      <section className="py-20 bg-black/30">
+      <section className="py-20 bg-gray-800">
         <div className="container mx-auto px-4">
           {/* <CommunityStats /> */}
         </div>

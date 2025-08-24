@@ -1,0 +1,40 @@
+{
+  "prompt": "Create a modern, professional logo for 'AztlanPay' - a global DeFi micro-insurance platform. The logo should combine ancient Aztec/Mexican cultural elements with cutting-edge fintech design. Key elements to include: 1) A stylized shield or protective symbol representing insurance and security, 2) Subtle Aztec geometric patterns or motifs (like the ones found in ancient Mexican architecture), 3) Modern fintech elements like circuit patterns or digital connections, 4) A color palette using emerald green (#10B981) and electric blue (#3B82F6) as primary colors, with gold accents (#F59E0B) for premium feel. The design should be: - Scalable and recognizable at small sizes - Professional yet approachable - Culturally respectful while being modern - Suitable for both digital and print applications - Include both a symbol/icon and typography treatment. The overall feel should convey: trust, innovation, global reach, financial inclusion, and cultural heritage. Make it look like a premium fintech brand that serves emerging markets.",
+  "style": "Modern fintech logo with cultural heritage elements",
+  "aspect_ratio": "1:1",
+  "color_palette": {
+    "primary": "#10B981",
+    "secondary": "#3B82F6", 
+    "accent": "#F59E0B",
+    "background": "#1F2937",
+    "text": "#FFFFFF"
+  },
+  "design_elements": [
+    "Shield or protective symbol",
+    "Aztec geometric patterns",
+    "Modern circuit/digital elements",
+    "Professional typography",
+    "Cultural heritage motifs"
+  ],
+  "brand_attributes": [
+    "Trustworthy",
+    "Innovative", 
+    "Global",
+    "Inclusive",
+    "Premium",
+    "Cultural",
+    "Modern"
+  ],
+  "target_audience": "Global unbanked population, emerging markets, fintech users",
+  "industry": "DeFi Insurance, Financial Technology, Micro-insurance",
+  "usage": "Digital platforms, mobile apps, websites, business cards, marketing materials",
+  "technical_requirements": {
+    "format": "Vector/PNG",
+    "scalability": "High",
+    "color_mode": "RGB and CMYK",
+    "transparency": "Required"
+  },
+  "cultural_context": "Inspired by Mexican/Aztec heritage while being globally accessible and modern",
+  "competitor_analysis": "Should stand out from traditional insurance logos while maintaining professionalism",
+  "emotional_response": "Should evoke feelings of security, trust, innovation, and cultural pride"
+}

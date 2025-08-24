@@ -15,13 +15,13 @@ if (!projectId) {
 
 // Set up metadata
 const metadata = {
-  name: 'PakalFi',
-  description: 'Micro-seguros paramétricos inteligentes',
-  url: 'https://pakalfi.mx', // origin must match your domain & subdomain
-  icons: ['https://pakalfi.mx/logo.png']
+  name: 'MicroInsurance - Global Platform',
+  description: 'Democratizing insurance access for 1.7B unbanked people globally',
+  url: 'https://microinsurance.global',
+  icons: ['https://microinsurance.global/icon.png']
 }
 
-// Create the modal
+// Create the modal with enhanced features
 const modal = createAppKit({
   adapters: [wagmiAdapter],
   projectId,
@@ -29,7 +29,17 @@ const modal = createAppKit({
   defaultNetwork: monadTestnet,
   metadata: metadata,
   features: {
-    analytics: true // Optional - defaults to your Cloud configuration
+    analytics: true, // Optional - defaults to your Cloud configuration
+    email: true,
+    socials: ['google', 'apple'],
+    swaps: true,
+    onramp: true
+  },
+  themeMode: 'light',
+  themeVariables: {
+    '--w3m-color-mix': '#10b981',
+    '--w3m-color-mix-strength': 40,
+    '--w3m-font-family': 'Inter, sans-serif'
   }
 })
 

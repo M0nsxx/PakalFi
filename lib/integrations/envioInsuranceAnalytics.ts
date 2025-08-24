@@ -47,7 +47,7 @@ export class EnvioInsuranceAnalytics {
   private contracts: any;
   
   constructor() {
-    this.apiKey = process.env.ENVIO_API_KEY || '';
+    this.apiKey = process.env.ENVIO_API_KEY || '48a3acc9-9ca5-4734-84f5-c260fd8ec3f1';
     this.endpoint = 'https://indexer.envio.dev';
     this.network = 'monad-testnet';
     this.contracts = getContracts(10143); // Monad testnet chain ID
