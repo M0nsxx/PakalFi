@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import { getContracts } from '@/config/contracts';
+import { useState } from 'react';
 
 export interface PremiumPayment {
   policyHolder: string;

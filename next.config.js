@@ -30,6 +30,10 @@ module.exports = withPWA({
   },
   webpack: (config) => {
     config.externals.push('pino-pretty', 'lokijs', 'encoding')
+    
+    // Add alias for missing Para SDK
+    config.resolve.alias['@getpara/react-sdk'] = require.resolve('./lib/integrations/build-fixes.ts')
+    
     return config
   },
   experimental: {

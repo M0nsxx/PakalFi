@@ -136,10 +136,10 @@ export function Navbar() {
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="container mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo and Monad Status */}
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-4">
               <motion.button
                 onClick={() => router.push('/')}
                 initial={{ opacity: 0, x: -20 }}
@@ -158,13 +158,13 @@ export function Navbar() {
               </motion.button>
 
               {/* Monad Status Indicators */}
-              <div className="hidden lg:block">
+              <div className="hidden lg:flex">
                 <MonadStatus />
               </div>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-6">
+            <div className="hidden lg:flex items-center space-x-4">
               {navItems.map((item) => {
                 // Hide Dashboard if not connected
                 if (item.label === 'Dashboard' && !isConnected) {
@@ -177,7 +177,7 @@ export function Navbar() {
                       onClick={() => toggleDropdown(item.label)}
                       onMouseEnter={() => setActiveDropdown(item.label)}
                       onMouseLeave={() => setActiveDropdown(null)}
-                      className="flex items-center space-x-1 text-white hover:text-green-400 transition-colors py-2 px-3 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+                      className="flex items-center space-x-1 text-white hover:text-green-400 transition-colors py-2 px-2 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 text-sm"
                       aria-expanded={activeDropdown === item.label}
                       aria-haspopup="true"
                       tabIndex={0}
@@ -189,7 +189,7 @@ export function Navbar() {
                   ) : (
                     <button
                       onClick={() => handleNavClick(item.href)}
-                      className="flex items-center space-x-1 text-white hover:text-green-400 transition-colors py-2 px-3 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+                      className="flex items-center space-x-1 text-white hover:text-green-400 transition-colors py-2 px-2 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 text-sm"
                       tabIndex={0}
                     >
                       {item.icon}
@@ -232,9 +232,9 @@ export function Navbar() {
               })}
             </div>
 
-                        {/* Desktop CTA Buttons */}
-            <div className="hidden lg:flex items-center space-x-4">
-              <WalletButton className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-full font-medium hover:shadow-lg transition-all" />
+            {/* Desktop CTA Buttons */}
+            <div className="hidden lg:flex items-center space-x-3">
+              <WalletButton className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-full font-medium hover:shadow-lg transition-all text-sm" />
               
               <PWAInstallButton />
             </div>

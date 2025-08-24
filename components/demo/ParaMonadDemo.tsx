@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+// Using mock implementation since Para SDK is not installed
+// import { ParaMock } from '@/lib/integrations/para-mock';
 
 export default function ParaMonadDemo() {
   return (

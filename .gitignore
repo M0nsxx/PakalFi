@@ -74,3 +74,4 @@ typechain-types/
 # Temporary files
 *.tmp
 *.temp
+.vercel
