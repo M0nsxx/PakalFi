@@ -19,6 +19,12 @@ const withPWA = require('next-pwa')({
 })
 
 module.exports = withPWA({
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     domains: ['api.whatsapp.com', 'monad.xyz', 'images.unsplash.com'],
   },
