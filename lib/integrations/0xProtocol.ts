@@ -1,6 +1,8 @@
 import { ethers } from 'ethers';
 import { getContracts } from '@/config/contracts';
 
+// Server-side integration - no React hooks allowed
+
 export interface PremiumPayment {
   policyHolder: string;
   premiumAmount: string;
