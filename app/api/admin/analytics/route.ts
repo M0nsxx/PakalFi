@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getContracts } from '@/config/contracts'
 
 export async function GET(req: NextRequest) {
   try {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
-    const analyticsData = {
+    // Get deployed contracts
+    const contracts = getContracts(10143) // Monad testnet
+    
+    // Initialize analytics data
+    let analyticsData = {
       // User metrics
       totalUsers: 50247,
       activeUsers: 45892,
@@ -112,6 +114,13 @@ export async function GET(req: NextRequest) {
         { date: 'Jan 6', events: 8 },
         { date: 'Jan 7', events: 6 }
       ]
+    }
+
+    // Try to get real data from contracts if available
+    if (contracts?.insurancePool && contracts?.policyNFT) {
+      // In a real implementation, you would call contract methods here
+      // For now, we'll keep the fallback data but could enhance with real contract calls
+      console.log('Contracts available for analytics:', contracts)
     }
 
     return NextResponse.json({

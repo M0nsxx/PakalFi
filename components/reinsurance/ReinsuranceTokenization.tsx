@@ -27,6 +27,7 @@ import {
   Award,
   TrendingDown
 } from 'lucide-react'
+import { getContracts } from '@/config/contracts'
 
 interface ReinsurancePool {
   id: string
@@ -68,113 +69,52 @@ export function ReinsuranceTokenization() {
   const [showInvestModal, setShowInvestModal] = useState(false)
   const [showDetailsModal, setShowDetailsModal] = useState(false)
 
-  const [pools] = useState<ReinsurancePool[]>([
-    {
-      id: 'catastrophe-mexico',
-      name: 'Pool Catastrófico México',
-      type: 'catastrophe',
-      totalCapacity: 10000000,
-      usedCapacity: 7500000,
-      minInvestment: 5000,
-      maxInvestment: 500000,
-      apy: 18.5,
-      risk: 'high',
-      coverage: 'Terremotos, huracanes, inundaciones in Mexico',
-      description: 'Pool especializado en riesgos catastróficos naturales en territorio mexicano',
-      features: ['Coverage multi-riesgo', 'Payments automáticos', 'Diversificación geográfica'],
-      status: 'open',
-      participants: 45,
-      totalInvested: 7500000,
-      claimsPaid: 1250000,
-      inceptionDate: new Date('2024-01-01'),
-      maturityDate: new Date('2024-12-31')
-    },
-    {
-      id: 'excess-loss-health',
-      name: 'Pool Exceso de Pérdida Health',
-      type: 'excess_loss',
-      totalCapacity: 5000000,
-      usedCapacity: 3200000,
-      minInvestment: 2000,
-      maxInvestment: 200000,
-      apy: 12.3,
-      risk: 'medium',
-      coverage: 'Claims de salud que excedan $100,000 MXN',
-      description: 'Protección contra pérdidas excesivas en seguros de salud',
-      features: ['Límites claros', 'Evaluación automática', 'Payments rápidos'],
-      status: 'open',
-      participants: 28,
-      totalInvested: 3200000,
-      claimsPaid: 450000,
-      inceptionDate: new Date('2024-01-01'),
-      maturityDate: new Date('2024-12-31')
-    },
-    {
-      id: 'quota-share-auto',
-      name: 'Pool Cuota Parte Automóviles',
-      type: 'quota_share',
-      totalCapacity: 8000000,
-      usedCapacity: 6000000,
-      minInvestment: 3000,
-      maxInvestment: 300000,
-      apy: 9.8,
-      risk: 'low',
-      coverage: '30% de todos los claims de auto',
-      description: 'Participación proporcional en la cartera de seguros automotrices',
-      features: ['Participación fija', 'Riesgo distribuido', 'Flujo constante'],
-      status: 'open',
-      participants: 62,
-      totalInvested: 6000000,
-      claimsPaid: 1800000,
-      inceptionDate: new Date('2024-01-01'),
-      maturityDate: new Date('2024-12-31')
-    },
-    {
-      id: 'facultative-agriculture',
-      name: 'Pool Facultativo Agrícola',
-      type: 'facultative',
-      totalCapacity: 3000000,
-      usedCapacity: 2800000,
-      minInvestment: 1000,
-      maxInvestment: 100000,
-      apy: 15.7,
-      risk: 'medium',
-      coverage: 'Riesgos agrícolas específicos por región',
-      description: 'Coverage facultativa para riesgos agrícolas especializados',
-      features: ['Evaluación individual', 'Flexibilidad', 'Premiums ajustadas'],
-      status: 'open',
-      participants: 35,
-      totalInvested: 2800000,
-      claimsPaid: 320000,
-      inceptionDate: new Date('2024-01-01'),
-      maturityDate: new Date('2024-12-31')
-    }
-  ])
+  const [pools, setPools] = useState<ReinsurancePool[]>([])
+  const [stats, setStats] = useState({
+    totalValue: 0,
+    totalParticipants: 0,
+    averageYield: 0,
+    activePools: 0
+  })
+  const [contracts, setContracts] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
-  const [positions] = useState<TokenizedPosition[]>([
-    {
-      id: '1',
-      poolId: 'catastrophe-mexico',
-      tokens: 5000,
-      investment: 50000,
-      startDate: new Date('2024-01-01'),
-      earned: 4625,
-      status: 'active',
-      riskScore: 0.75,
-      yieldRate: 18.5
-    },
-    {
-      id: '2',
-      poolId: 'excess-loss-health',
-      tokens: 3000,
-      investment: 30000,
-      startDate: new Date('2024-01-15'),
-      earned: 1845,
-      status: 'active',
-      riskScore: 0.45,
-      yieldRate: 12.3
+  useEffect(() => {
+    // Get deployed contracts
+    const deployedContracts = getContracts(10143) // Monad testnet
+    setContracts(deployedContracts)
+    
+    // Fetch reinsurance data
+    fetchReinsuranceData()
+  }, [])
+
+  const fetchReinsuranceData = async () => {
+    try {
+      setLoading(true)
+      
+      // Fetch reinsurance pools from contract
+      if (contracts?.reinsuranceToken) {
+        const response = await fetch('/api/reinsurance/pools', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            reinsuranceToken: contracts.reinsuranceToken,
+            insurancePool: contracts.insurancePool
+          })
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setPools(data.pools || [])
+          setStats(data.stats || {})
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching reinsurance data:', error)
+    } finally {
+      setLoading(false)
     }
-  ])
+  }
 
   const getTypeColor = (type: string) => {
     const colors = {
@@ -186,14 +126,24 @@ export function ReinsuranceTokenization() {
     return colors[type as keyof typeof colors] || 'bg-gray-500/20 text-gray-400 border-gray-500/30'
   }
 
-  const getTypeIcon = (type: string) => {
-    const icons = {
-      catastrophe: '🌪️',
-      excess_loss: '📈',
-      quota_share: '📊',
-      facultative: '🎯'
+  const getRegionColor = (region: string) => {
+    switch (region) {
+      case 'LATAM': return 'text-green-400'
+      case 'AFRICA': return 'text-yellow-400'
+      case 'SOUTHEAST_ASIA': return 'text-blue-400'
+      case 'GLOBAL': return 'text-purple-400'
+      default: return 'text-gray-400'
     }
-    return icons[type as keyof typeof icons] || '📋'
+  }
+
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case 'health': return <Shield className="w-5 h-5" />
+      case 'climate': return <Zap className="w-5 h-5" />
+      case 'security': return <Shield className="w-5 h-5" />
+      case 'mobility': return <TrendingUp className="w-5 h-5" />
+      default: return <Globe className="w-5 h-5" />
+    }
   }
 
   const getRiskColor = (risk: string) => {

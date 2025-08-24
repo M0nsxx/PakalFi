@@ -82,7 +82,7 @@ const milestones: Milestone[] = [
   {
     year: '2020',
     title: 'Foundation',
-    description: 'MicroInsurance was born with the mission to democratize access to insurance in Mexico',
+            description: 'PakalFi was born with the mission to democratize access to insurance in Mexico',
     icon: <Rocket className="w-8 h-8 text-green-400" />
   },
   {
@@ -149,7 +149,7 @@ export function AboutUs() {
             Our History
           </h2>
           <p className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-            MicroInsurance was born from a simple question: Why are insurance policies so expensive and complicated 
+            PakalFi was born from a simple question: Why are insurance policies so expensive and complicated 
             for the people who need them most? In 2020, we decided to change that.
           </p>
         </motion.div>

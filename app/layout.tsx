@@ -7,13 +7,14 @@ import { Footer } from '@/components/ui/Footer'
 import { AIChat } from '@/components/ui/AIChat'
 import ContextProvider from '@/context'
 import { headers } from 'next/headers'
+import { assertConfigValid } from '@/lib/config/validation'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'MicroInsurance - Parametric Insurance from $10 MXN',
-  description: 'Smart micro-insurance that pays automatically. No paperwork, no rejections, 100% transparent. Protect your family from $10 pesos per month.',
-  keywords: 'microinsurance, parametric insurance, automatic insurance, insurance mexico, health insurance, climate insurance',
+  title: 'MicroInsurance - Global Parametric DeFi Insurance Platform',
+  description: 'Democratizing insurance access for 1.7B unbanked people globally. Smart parametric insurance with instant payouts, no paperwork, 100% transparent. Starting from $0.50 USD/month.',
+  keywords: 'microinsurance, parametric insurance, defi insurance, global insurance, unbanked, financial inclusion, instant payouts, blockchain insurance, emerging markets',
   authors: [{ name: 'MicroInsurance Team' }],
   creator: 'MicroInsurance',
   publisher: 'MicroInsurance',
@@ -22,21 +23,21 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://microseguro.mx'),
+  metadataBase: new URL('https://microinsurance.global'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: 'MicroInsurance - Parametric Insurance from $10 MXN',
-    description: 'Smart micro-insurance that pays automatically. No paperwork, no rejections, 100% transparent.',
-    url: 'https://microseguro.mx',
+    title: 'MicroInsurance - Global Parametric DeFi Insurance Platform',
+    description: 'Democratizing insurance access for 1.7B unbanked people globally. Smart parametric insurance with instant payouts.',
+    url: 'https://microinsurance.global',
     siteName: 'MicroInsurance',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'MicroInsurance - Parametric Insurance',
+        alt: 'MicroInsurance - Global Parametric DeFi Insurance Platform',
       },
     ],
     locale: 'en_US',
@@ -44,8 +45,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MicroInsurance - Parametric Insurance from $10 MXN',
-    description: 'Smart micro-insurance that pays automatically. No paperwork, no rejections, 100% transparent.',
+    title: 'MicroInsurance - Global Parametric DeFi Insurance Platform',
+    description: 'Democratizing insurance access for 1.7B unbanked people globally. Smart parametric insurance with instant payouts.',
     images: ['/og-image.jpg'],
   },
   robots: {
@@ -69,6 +70,14 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // Validate configuration on startup
+  try {
+    assertConfigValid()
+  } catch (error) {
+    console.error('Configuration validation failed:', error)
+    // In production, you might want to show an error page
+  }
+
   const headersObj = await headers();
   const cookies = headersObj.get('cookie')
 
@@ -125,23 +134,26 @@ export default async function RootLayout({
               "@context": "https://schema.org",
               "@type": "FinancialService",
               "name": "MicroInsurance",
-              "description": "Smart parametric micro-insurance that pays automatically",
-              "url": "https://microseguro.mx",
-              "logo": "https://microseguro.mx/logo.png",
+              "description": "Global parametric micro-insurance platform democratizing access for 1.7B unbanked people",
+              "url": "https://microinsurance.global",
+              "logo": "https://microinsurance.global/logo.png",
               "address": {
                 "@type": "PostalAddress",
-                "addressCountry": "MX",
-                "addressLocality": "Mexico City"
+                "addressCountry": "CH",
+                "addressLocality": "Zug"
               },
               "contactPoint": {
                 "@type": "ContactPoint",
-                "telephone": "+52-55-1234-5678",
+                "telephone": "+1-800-MICRO-INS",
                 "contactType": "customer service",
-                "availableLanguage": "English"
+                "availableLanguage": ["English", "Spanish", "Portuguese", "French", "Arabic", "Hindi", "Indonesian"]
               },
-              "priceRange": "$10-$150 MXN",
-              "areaServed": "MX",
-              "serviceType": "Insurance"
+              "priceRange": "$0.50-$50 USD",
+              "areaServed": ["MX", "BR", "CO", "AR", "PE", "NG", "KE", "ZA", "GH", "EG", "ID", "PH", "VN", "IN", "BD"],
+              "serviceType": "Insurance",
+              "foundingDate": "2024",
+              "numberOfEmployees": "50-100",
+              "slogan": "Insurance for Everyone, Everywhere"
             })
           }}
         />

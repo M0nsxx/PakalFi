@@ -1,93 +1,81 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Zap, CheckCircle, TrendingUp } from 'lucide-react'
+import { TrendingUp, TrendingDown, DollarSign, Users, Clock, MapPin } from 'lucide-react'
+import { getContracts } from '@/config/contracts'
 
-interface Claim {
+interface ClaimEvent {
   id: string
   type: string
   amount: number
   location: string
-  timestamp: Date
-  status: 'processing' | 'completed'
+  timestamp: string
+  status: 'pending' | 'approved' | 'paid'
 }
 
 export function LiveClaimTicker() {
-  const [isMounted, setIsMounted] = useState(false)
-  const [claims, setClaims] = useState<Claim[]>([])
-  const [totalProcessed, setTotalProcessed] = useState(0)
-  const [totalAmount, setTotalAmount] = useState(0)
-  
+  const [claims, setClaims] = useState<ClaimEvent[]>([])
+  const [stats, setStats] = useState({
+    totalClaims: 0,
+    totalAmount: 0,
+    averageAmount: 0,
+    activeUsers: 0
+  })
+  const [contracts, setContracts] = useState<any>(null)
+
   useEffect(() => {
-    setIsMounted(true)
+    // Get deployed contracts
+    const deployedContracts = getContracts(10143) // Monad testnet
+    setContracts(deployedContracts)
     
-    // Simulate real-time claims
-    const interval = setInterval(() => {
-      const claimTypes = [
-        { name: 'Health', icon: '🏥', color: 'green' },
-        { name: 'Clima', icon: '🌧️', color: 'blue' },
-        { name: 'Seguridad', icon: '🛡️', color: 'red' },
-        { name: 'Movilidad', icon: '🚗', color: 'amber' }
-      ]
-      
-      const locations = ['CDMX', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'Mérida']
-      
-      const randomType = claimTypes[Math.floor(Math.random() * claimTypes.length)]
-      const randomLocation = locations[Math.floor(Math.random() * locations.length)]
-      const randomAmount = Math.floor(Math.random() * 15000) + 500
-      
-      if (randomType && randomLocation) {
-        const newClaim: Claim = {
-          id: Math.random().toString(),
-          type: randomType.name,
-          amount: randomAmount,
-          location: randomLocation,
-          timestamp: new Date(),
-          status: 'processing'
-        }
-        
-        setClaims(prev => {
-          const updated = [newClaim, ...prev.slice(0, 4)]
-          return updated
-        })
-        
-        setTotalProcessed(prev => prev + 1)
-        setTotalAmount(prev => prev + randomAmount)
-        
-        // Mark claim as completed after 2 seconds
-        setTimeout(() => {
-          setClaims(prev => 
-            prev.map(claim => 
-              claim.id === newClaim.id 
-                ? { ...claim, status: 'completed' }
-                : claim
-            )
-          )
-        }, 2000)
-      }
-    }, 3000)
+    // Start live updates
+    fetchLiveClaims()
+    const interval = setInterval(fetchLiveClaims, 10000) // Update every 10 seconds
     
     return () => clearInterval(interval)
   }, [])
-  
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case 'Health': return 'text-green-400'
-      case 'Clima': return 'text-blue-400'
-      case 'Seguridad': return 'text-red-400'
-      case 'Movilidad': return 'text-amber-400'
-      default: return 'text-white'
+
+  const fetchLiveClaims = async () => {
+    try {
+      // Fetch live claims from insurance pool contract
+      if (contracts?.insurancePool) {
+        const response = await fetch('/api/claims/live', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            insurancePool: contracts.insurancePool,
+            policyNFT: contracts.policyNFT,
+            oracle: contracts.oracle
+          })
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setClaims(data.claims || [])
+          setStats(data.stats || {})
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching live claims:', error)
     }
   }
-  
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'Health': return '🏥'
-      case 'Clima': return '🌧️'
-      case 'Seguridad': return '🛡️'
-      case 'Movilidad': return '🚗'
-      default: return '📋'
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'paid': return 'text-green-400'
+      case 'approved': return 'text-yellow-400'
+      case 'pending': return 'text-blue-400'
+      default: return 'text-gray-400'
+    }
+  }
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'paid': return <TrendingUp className="w-4 h-4" />
+      case 'approved': return <Clock className="w-4 h-4" />
+      case 'pending': return <Clock className="w-4 h-4" />
+      default: return <Clock className="w-4 h-4" />
     }
   }
   
@@ -110,13 +98,13 @@ export function LiveClaimTicker() {
             <div className="flex items-center gap-1">
               <TrendingUp className="w-4 h-4 text-green-400" />
               <span suppressHydrationWarning>
-                {isMounted ? `${totalProcessed.toLocaleString()} claims` : '0 claims'}
+                {stats.totalClaims} claims
               </span>
             </div>
             <div className="flex items-center gap-1">
-              <Zap className="w-4 h-4 text-yellow-400" />
+              <DollarSign className="w-4 h-4 text-yellow-400" />
               <span suppressHydrationWarning>
-                {isMounted ? `$${(totalAmount / 1000000).toFixed(1)}M paid` : '$0.0M paid'}
+                ${stats.totalAmount.toLocaleString()}
               </span>
             </div>
           </div>
@@ -135,29 +123,29 @@ export function LiveClaimTicker() {
                     className="flex items-center gap-3 text-white whitespace-nowrap"
                   >
                     <span className="text-gray-400 text-sm" suppressHydrationWarning>
-                      {isMounted ? claim.timestamp.toLocaleTimeString() : '00:00:00'}
+                      {new Date(claim.timestamp).toLocaleTimeString()}
                     </span>
                     
                     <motion.div
-                      animate={claim.status === 'processing' ? { rotate: 360 } : {}}
+                      animate={claim.status === 'pending' ? { rotate: 360 } : {}}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                       className="w-4 h-4"
                     >
-                      {claim.status === 'processing' ? (
+                      {claim.status === 'pending' ? (
                         <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
                       ) : (
-                        <CheckCircle className="w-4 h-4 text-green-400" />
+                        <Clock className="w-4 h-4 text-green-400" />
                       )}
                     </motion.div>
                     
-                    <span className="text-lg">{getTypeIcon(claim.type)}</span>
+                    <span className="text-lg">{claim.type}</span>
                     
-                    <span className={`font-medium ${getTypeColor(claim.type)}`}>
-                      {claim.type}
+                    <span className={`font-medium ${getStatusColor(claim.status)}`}>
+                      {claim.status}
                     </span>
                     
                     <span className="text-green-400 font-bold" suppressHydrationWarning>
-                      {isMounted ? `$${claim.amount.toLocaleString()}` : '$0'}
+                      ${claim.amount.toLocaleString()}
                     </span>
                     
                     <span className="text-gray-400">

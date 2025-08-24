@@ -124,25 +124,25 @@ export default function EvaluacionRiesgoPage() {
     if (score < 50) {
       level = 'Low'
       recommendations = [
-        'Micro-Security para proteger tus dispositivos',
-        'Micro-Health básico para emergencias',
+        'Pakal-Security para proteger tus dispositivos',
+        'Pakal-Health básico para emergencias',
         'Considera ahorrar para crear un fondo de emergencia'
       ]
     } else if (score < 80) {
       level = 'Medium'
       recommendations = [
-        'Micro-Health con cobertura amplia',
-        'Micro-Security para bienes personales',
-        'Micro-Mobility si usas transporte regularmente',
+        'Pakal-Health con cobertura amplia',
+        'Pakal-Security para bienes personales',
+        'Pakal-Mobility si usas transporte regularmente',
         'Considera un plan de ahorro estructurado'
       ]
     } else {
       level = 'High'
       recommendations = [
-        'Micro-Health con cobertura máxima',
-        'Micro-Security integral',
-        'Micro-Climate si vives en zona de riesgo',
-        'Micro-Mobility completo',
+        'Pakal-Health con cobertura máxima',
+        'Pakal-Security integral',
+        'Pakal-Climate si vives en zona de riesgo',
+        'Pakal-Mobility completo',
         'Consulta con un asesor financiero'
       ]
     }

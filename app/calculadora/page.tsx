@@ -33,10 +33,10 @@ export default function CalculadoraPage() {
   const [frequency, setFrequency] = useState('monthly')
 
   const products = [
-    { id: 'salud', name: 'Micro-Health', icon: <Shield className="w-6 h-6" />, color: 'from-green-500 to-emerald-500' },
-    { id: 'clima', name: 'Micro-Climate', icon: <Shield className="w-6 h-6" />, color: 'from-blue-500 to-cyan-500' },
-    { id: 'seguridad', name: 'Micro-Security', icon: <Shield className="w-6 h-6" />, color: 'from-purple-500 to-pink-500' },
-    { id: 'movilidad', name: 'Micro-Mobility', icon: <Shield className="w-6 h-6" />, color: 'from-orange-500 to-red-500' }
+            { id: 'salud', name: 'Pakal-Health', icon: <Shield className="w-6 h-6" />, color: 'from-green-500 to-emerald-500' },
+        { id: 'clima', name: 'Pakal-Climate', icon: <Shield className="w-6 h-6" />, color: 'from-blue-500 to-cyan-500' },
+        { id: 'seguridad', name: 'Pakal-Security', icon: <Shield className="w-6 h-6" />, color: 'from-purple-500 to-pink-500' },
+        { id: 'movilidad', name: 'Pakal-Mobility', icon: <Shield className="w-6 h-6" />, color: 'from-orange-500 to-red-500' }
   ]
 
   const locations = [

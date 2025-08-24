@@ -2,7 +2,7 @@
 
 ## 📋 Descripción
 
-Este documento explica cómo integrar Reown AppKit para la funcionalidad de wallet en MicroSeguro.
+Este documento explica cómo integrar Reown AppKit para la funcionalidad de wallet en PakalFi.
 
 ## 🚀 Instalación
 

@@ -1,6 +1,7 @@
 {
-  "name": "microseguro",
+  "name": "microinsurance",
   "version": "1.0.0",
+  "description": "Global Parametric DeFi Insurance Platform - Democratizing insurance access for 1.7B unbanked people globally",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,7 +15,11 @@
     "verify:monad": "hardhat run scripts/verify.ts --network monadTestnet",
     "test": "hardhat test",
     "node": "hardhat node",
-    "clean": "hardhat clean"
+    "clean": "hardhat clean",
+    "validate:config": "node -e \"const { validateConfig } = require('./lib/config/validation'); console.log('Configuration validation:', validateConfig());\"",
+    "test:contracts": "node scripts/test-contracts.js",
+    "test:integrations": "node scripts/test-integrations.js",
+    "test:e2e": "node scripts/test-e2e.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.0",
@@ -80,5 +85,25 @@
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=8.0.0"
-  }
+  },
+  "keywords": [
+    "microinsurance",
+    "parametric-insurance",
+    "defi",
+    "blockchain",
+    "insurance",
+    "global",
+    "unbanked",
+    "financial-inclusion",
+    "emerging-markets",
+    "monad",
+    "ethereum"
+  ],
+  "author": "MicroInsurance Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/microinsurance/global-platform"
+  },
+  "homepage": "https://microinsurance.global"
 }

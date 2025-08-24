@@ -32,25 +32,25 @@ export default function AboutUsPage() {
     {
       icon: <Heart className="w-8 h-8" />,
       title: 'Inclusion',
-      description: 'We believe everyone deserves access to financial protection, regardless of their income level.',
+      description: 'We believe everyone deserves access to financial protection, regardless of their income level or location.',
       color: 'from-red-500 to-pink-500'
     },
     {
       icon: <Shield className="w-8 h-8" />,
       title: 'Transparency',
-      description: 'We operate with complete transparency in our processes, prices, and coverage.',
+      description: 'We operate with complete transparency in our processes, prices, and coverage across all markets.',
       color: 'from-blue-500 to-cyan-500'
     },
     {
       icon: <Users className="w-8 h-8" />,
       title: 'Community',
-      description: 'We build a strong community where everyone supports each other.',
+      description: 'We build strong communities globally where everyone supports each other.',
       color: 'from-green-500 to-emerald-500'
     },
     {
       icon: <TrendingUp className="w-8 h-8" />,
       title: 'Innovation',
-      description: 'We use cutting-edge technology to make insurance more accessible.',
+      description: 'We use cutting-edge technology to make insurance more accessible worldwide.',
       color: 'from-purple-500 to-pink-500'
     }
   ]
@@ -60,28 +60,28 @@ export default function AboutUsPage() {
       name: 'María González',
       role: 'CEO & Founder',
       image: '/api/placeholder/200/200',
-      bio: 'Over 15 years of experience in fintech and microfinance. Passionate about financial inclusion.',
+      bio: 'Over 15 years of experience in fintech and microfinance. Passionate about global financial inclusion.',
       linkedin: '#'
     },
     {
       name: 'Carlos Rodríguez',
       role: 'CTO',
       image: '/api/placeholder/200/200',
-      bio: 'Expert in blockchain and mobile app development. Leads our digital transformation.',
+      bio: 'Expert in blockchain and mobile app development. Leads our global digital transformation.',
       linkedin: '#'
     },
     {
       name: 'Ana López',
       role: 'Product Director',
       image: '/api/placeholder/200/200',
-      bio: 'Specialist in innovative insurance product design and user experience.',
+      bio: 'Specialist in innovative insurance product design and user experience for emerging markets.',
       linkedin: '#'
     },
     {
       name: 'Luis Martínez',
       role: 'Operations Director',
       image: '/api/placeholder/200/200',
-      bio: 'Expert in process optimization and claims management. Ensures operational excellence.',
+      bio: 'Expert in process optimization and claims management. Ensures operational excellence globally.',
       linkedin: '#'
     }
   ]
@@ -90,13 +90,13 @@ export default function AboutUsPage() {
     {
       year: '2019',
       title: 'Foundation',
-      description: 'MicroInsurance was born with the mission to democratize access to insurance in Mexico.',
+      description: 'MicroInsurance was born with the mission to democratize access to insurance globally.',
       icon: <Building className="w-6 h-6" />
     },
     {
       year: '2020',
       title: 'First Product',
-      description: 'We launched Micro-Health, our first micro-insurance product.',
+      description: 'We launched Micro-Health, our first micro-insurance product in Mexico.',
       icon: <Shield className="w-6 h-6" />
     },
     {
@@ -114,13 +114,13 @@ export default function AboutUsPage() {
     {
       year: '2023',
       title: 'Micro-Mobility',
-      description: 'We launched Micro-Mobility to protect drivers and delivery workers.',
+      description: 'We launched Micro-Mobility to protect drivers and delivery workers globally.',
       icon: <Users className="w-6 h-6" />
     },
     {
       year: '2024',
-      title: '15,000+ Clients',
-      description: 'We reached over 15,000 protected clients across Mexico.',
+      title: 'Global Expansion',
+      description: 'We reached over 15,000 protected clients across 15+ countries globally.',
       icon: <Award className="w-6 h-6" />
     }
   ]
@@ -142,7 +142,7 @@ export default function AboutUsPage() {
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               We are an innovative company dedicated to democratizing access to insurance 
-              in Mexico. Our mission is to protect everyone, regardless of their income level.
+              globally. Our mission is to protect everyone, regardless of their income level or location.
             </p>
           </motion.div>
 
@@ -190,22 +190,22 @@ export default function AboutUsPage() {
                 <h2 className="text-2xl font-bold text-white">Our Mission</h2>
               </div>
               <p className="text-gray-300 leading-relaxed mb-6">
-                To democratize access to insurance in Mexico, providing innovative and 
-                accessible products that protect the most vulnerable people and families, 
-                contributing to financial inclusion and social well-being.
+                To democratize access to insurance globally, providing innovative and 
+                accessible products that protect the most vulnerable people and families worldwide, 
+                contributing to financial inclusion and social well-being across all markets.
               </p>
               <ul className="space-y-3 text-gray-300">
                 <li className="flex items-start">
                   <div className="w-2 h-2 bg-green-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <span>Make insurance accessible to everyone</span>
+                  <span>Make insurance accessible to everyone globally</span>
                 </li>
                 <li className="flex items-start">
                   <div className="w-2 h-2 bg-green-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <span>Protect the most vulnerable families</span>
+                  <span>Protect the most vulnerable families worldwide</span>
                 </li>
                 <li className="flex items-start">
                   <div className="w-2 h-2 bg-green-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <span>Contribute to financial inclusion</span>
+                  <span>Contribute to global financial inclusion</span>
                 </li>
               </ul>
             </motion.div>
@@ -222,14 +222,14 @@ export default function AboutUsPage() {
                 <h2 className="text-2xl font-bold text-white">Our Vision</h2>
               </div>
               <p className="text-gray-300 leading-relaxed mb-6">
-                To be the leading company in micro-insurance in Latin America, recognized for our 
+                To be the leading company in micro-insurance globally, recognized for our 
                 technological innovation, social commitment and ability to transform the 
-                traditional insurance industry.
+                traditional insurance industry across all markets.
               </p>
               <ul className="space-y-3 text-gray-300">
                 <li className="flex items-start">
                   <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <span>Leader in micro-insurance in Latin America</span>
+                  <span>Leader in micro-insurance globally</span>
                 </li>
                 <li className="flex items-start">
                   <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
@@ -237,7 +237,7 @@ export default function AboutUsPage() {
                 </li>
                 <li className="flex items-start">
                   <div className="w-2 h-2 bg-blue-400 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <span>Transform the insurance industry</span>
+                  <span>Transform the insurance industry worldwide</span>
                 </li>
               </ul>
             </motion.div>
@@ -245,8 +245,85 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      {/* Values */}
+      {/* Global Markets Section */}
       <section className="py-20 px-4 bg-gray-800/30">
+        <div className="container mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-white mb-4">Global Markets</h2>
+            <p className="text-gray-300 max-w-2xl mx-auto">
+              Serving 1.7 billion unbanked people across three strategic regions
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur border border-green-500/30 rounded-2xl p-8 text-center"
+            >
+              <Globe className="w-16 h-16 text-green-400 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">Latin America</h3>
+              <p className="text-gray-300 mb-6">500M unbanked population</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <div>• Mexico (65M) - Regulatory sandbox</div>
+                <div>• Brazil (45M) - High crypto adoption</div>
+                <div>• Colombia (20M) - Crypto-friendly regulation</div>
+                <div>• Argentina (15M) - High inflation protection</div>
+                <div>• Peru (12M) - Financial inclusion priority</div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur border border-blue-500/30 rounded-2xl p-8 text-center"
+            >
+              <Award className="w-16 h-16 text-blue-400 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">Africa</h3>
+              <p className="text-gray-300 mb-6">350M unbanked population</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <div>• Nigeria (60M) - Largest African economy</div>
+                <div>• Kenya (15M) - M-Pesa ecosystem</div>
+                <div>• South Africa (13M) - Fintech hub</div>
+                <div>• Ghana (8M) - Progressive regulation</div>
+                <div>• Egypt (25M) - Young tech-savvy population</div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur border border-purple-500/30 rounded-2xl p-8 text-center"
+            >
+              <TrendingUp className="w-16 h-16 text-purple-400 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">Southeast Asia</h3>
+              <p className="text-gray-300 mb-6">225M unbanked population</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <div>• Indonesia (95M) - Largest unbanked population</div>
+                <div>• Philippines (45M) - High remittance adoption</div>
+                <div>• Vietnam (25M) - Accelerated crypto growth</div>
+                <div>• Rural India (190M) - Massive market</div>
+                <div>• Bangladesh (55M) - Established microfinance</div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="py-20 px-4">
         <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -257,7 +334,7 @@ export default function AboutUsPage() {
           >
             <h2 className="text-4xl font-bold text-white mb-4">Our Values</h2>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              The principles that guide every decision we make and every action we take
+              The principles that guide every decision we make and every action we take globally
             </p>
           </motion.div>
 
@@ -285,7 +362,7 @@ export default function AboutUsPage() {
       </section>
 
       {/* Team */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-gray-800/30">
         <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -296,7 +373,7 @@ export default function AboutUsPage() {
           >
             <h2 className="text-4xl font-bold text-white mb-4">Our Team</h2>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              Meet the people who make our mission to democratize insurance possible
+              Meet the people who make our mission to democratize insurance globally possible
             </p>
           </motion.div>
 
@@ -328,7 +405,7 @@ export default function AboutUsPage() {
       </section>
 
       {/* Timeline */}
-      <section className="py-20 px-4 bg-gray-800/30">
+      <section className="py-20 px-4">
         <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -339,7 +416,7 @@ export default function AboutUsPage() {
           >
             <h2 className="text-4xl font-bold text-white mb-4">Our History</h2>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              A journey of innovation and growth dedicated to financial inclusion
+              A journey of innovation and growth dedicated to global financial inclusion
             </p>
           </motion.div>
 
@@ -386,7 +463,7 @@ export default function AboutUsPage() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-gray-800/30">
         <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -397,7 +474,7 @@ export default function AboutUsPage() {
           >
             <h2 className="text-4xl font-bold text-white mb-4">Contact Us</h2>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              Do you have questions about us or want to know more about our products?
+              Do you have questions about us or want to know more about our global products?
             </p>
           </motion.div>
 
@@ -412,7 +489,7 @@ export default function AboutUsPage() {
               <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-8 rounded-xl mb-6">
                 <Phone className="w-12 h-12 text-white mx-auto mb-4" />
                 <div className="text-2xl font-bold text-white mb-2">Phone</div>
-                <div className="text-blue-100">800-MICRO-SEGURO</div>
+                <div className="text-blue-100">+1-800-MICRO-INS</div>
               </div>
               <p className="text-gray-300">Direct line available 24/7</p>
             </motion.div>
@@ -427,7 +504,7 @@ export default function AboutUsPage() {
               <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-8 rounded-xl mb-6">
                 <Mail className="w-12 h-12 text-white mx-auto mb-4" />
                 <div className="text-2xl font-bold text-white mb-2">Email</div>
-                <div className="text-purple-100">info@microseguro.com</div>
+                <div className="text-purple-100">info@microinsurance.global</div>
               </div>
               <p className="text-gray-300">Response within 24 hours</p>
             </motion.div>
@@ -442,9 +519,9 @@ export default function AboutUsPage() {
               <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-8 rounded-xl mb-6">
                 <MapPin className="w-12 h-12 text-white mx-auto mb-4" />
                 <div className="text-2xl font-bold text-white mb-2">Office</div>
-                <div className="text-green-100">CDMX, Mexico</div>
+                <div className="text-green-100">Zug, Switzerland</div>
               </div>
-              <p className="text-gray-300">Visit us at our offices</p>
+              <p className="text-gray-300">Visit us at our global headquarters</p>
             </motion.div>
           </div>
         </div>
@@ -460,10 +537,10 @@ export default function AboutUsPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl font-bold text-white mb-6">
-              Join Our Mission
+              Join Our Global Mission
             </h2>
             <p className="text-xl text-gray-300 mb-8">
-              Be part of the change. Get your micro-insurance and contribute to financial inclusion
+              Be part of the change. Get your micro-insurance and contribute to global financial inclusion
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <WalletButton />

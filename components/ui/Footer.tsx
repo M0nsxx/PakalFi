@@ -74,11 +74,11 @@ export function Footer() {
               viewport={{ once: true }}
             >
               <div className="flex items-center space-x-2 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center hover:scale-105 transition-transform">
                   <Shield className="w-6 h-6 text-white" />
                 </div>
-                <span className="text-2xl font-bold text-white">
-                  MicroInsurance
+                <span className="text-2xl font-bold text-gradient">
+                  PakalFi
                 </span>
               </div>
                              <p className="text-gray-400 mb-6 leading-relaxed">
@@ -94,7 +94,7 @@ export function Footer() {
                 </div>
                 <div className="flex items-center space-x-3 text-gray-400">
                   <Mail className="w-4 h-4" />
-                  <span>info@microseguro.com</span>
+                  <span>info@pakalfi.com</span>
                 </div>
                 <div className="flex items-center space-x-3 text-gray-400">
                   <MapPin className="w-4 h-4" />
@@ -271,7 +271,7 @@ export function Footer() {
               viewport={{ once: true }}
               className="flex items-center space-x-4 text-gray-400 text-sm"
             >
-                                           <span>&copy; {currentYear} MicroInsurance. All rights reserved.</span>
+                                           <span>&copy; {currentYear} PakalFi. All rights reserved.</span>
               <span className="hidden sm:inline">•</span>
               <span className="hidden sm:inline">Made By <a href="https://t.me/Vai0sx" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 transition-colors">@Vaios0x</a></span>
             </motion.div>

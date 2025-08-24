@@ -1,0 +1,24 @@
+{
+  "network": "monadTestnet",
+  "chainId": 10143,
+  "deployer": "0x703b1eAdE96B27867327Ad5AC2fE788342C6117A",
+  "contracts": {
+    "oracle": "0xaF9bAD18233d180BB7F763A0be4A252bDf16c776",
+    "reinsuranceToken": "0x47EdA49ea71f20738085f8774Be3f881A02354Af",
+    "policyNFT": "0xdaAb335F3B2dAc3e963809EE7dD8102A890870a3",
+    "insurancePool": "0x5b33069977773557D07023A73468fD16F83ebaea",
+    "gaslessPaymentHandler": "0xd5de766cdAAA47c9dB756c0f0c01d0F0494571D0",
+    "savingsGoalHandler": "0xE01592cE50FeFF1e9FB65888c66Dd5c6c4C85637"
+  },
+  "deploymentTime": "2025-08-24T07:30:16.098Z",
+  "features": {
+    "multiChain": true,
+    "multiCurrency": true,
+    "regionalPools": true,
+    "gaslessPayments": true,
+    "savingsGoals": true,
+    "crossChainMessaging": true,
+    "sdgTracking": true,
+    "parametricTriggers": true
+  }
+}

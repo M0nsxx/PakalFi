@@ -144,7 +144,7 @@ export default function MovilidadPage() {
             <div className="flex items-center justify-center space-x-2 mb-6">
               <Navigation className="w-8 h-8 text-indigo-400" />
               <h1 className="text-4xl md:text-6xl font-bold text-white text-center mb-6">
-                Micro-Mobility
+                Pakal-Mobility
               </h1>
               <p className="text-xl text-gray-300 text-center max-w-3xl mx-auto mb-8">
                 Protect yourself and your vehicle from accidents and damage. 
@@ -550,7 +550,7 @@ export default function MovilidadPage() {
               Ready to move safely?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join thousands of people who already trust Micro-Mobility for their protection
+              Join thousands of people who already trust Pakal-Mobility for their protection
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <WalletButton className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg hover:shadow-indigo-500/25 transition-all" />

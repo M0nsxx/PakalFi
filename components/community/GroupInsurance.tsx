@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'react'
 import {
   Users,
   Shield,
@@ -19,8 +19,12 @@ import {
   Activity,
   Plus,
   Search,
-  Filter
+  Filter,
+  Globe,
+  Heart,
+  Zap
 } from 'lucide-react'
+import { getContracts } from '@/config/contracts'
 
 interface GroupMember {
   id: string
@@ -59,135 +63,69 @@ interface GroupVote {
   type: 'policy_change' | 'premium_adjustment' | 'coverage_modification' | 'member_approval'
 }
 
+interface GroupInsurance {
+  id: string
+  name: string
+  members: number
+  totalCoverage: number
+  monthlyPremium: number
+  type: string
+  status: 'active' | 'pending' | 'expired'
+}
+
 export function GroupInsurance() {
   const [activeTab, setActiveTab] = useState('overview')
   const [selectedGroup, setSelectedGroup] = useState('familia-garcia')
   const [showCreateGroup, setShowCreateGroup] = useState(false)
   const [showJoinGroup, setShowJoinGroup] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
+  const [groups, setGroups] = useState<GroupInsurance[]>([])
+  const [stats, setStats] = useState({
+    totalGroups: 0,
+    totalMembers: 0,
+    totalCoverage: 0,
+    averagePremium: 0
+  })
+  const [contracts, setContracts] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
-  const [groups] = useState([
-    {
-      id: 'familia-garcia',
-      name: 'Familia García',
-      description: 'Grupo familiar extendido en CDMX',
-      members: 12,
-      maxMembers: 20,
-      policies: 3,
-      totalCoverage: 2500000,
-      monthlyPremium: 4500,
-      status: 'active'
-    },
-    {
-      id: 'vecinos-colonia',
-      name: 'Vecinos Colonia Roma',
-      description: 'Community de vecinos en Colonia Roma',
-      members: 25,
-      maxMembers: 50,
-      policies: 5,
-      totalCoverage: 5000000,
-      monthlyPremium: 8750,
-      status: 'active'
-    },
-    {
-      id: 'agricultores-valle',
-      name: 'Farmeres Valle de México',
-      description: 'Cooperativa de agricultores',
-      members: 45,
-      maxMembers: 100,
-      policies: 8,
-      totalCoverage: 15000000,
-      monthlyPremium: 22500,
-      status: 'active'
-    }
-  ])
+  useEffect(() => {
+    // Get deployed contracts
+    const deployedContracts = getContracts(10143) // Monad testnet
+    setContracts(deployedContracts)
+    
+    // Fetch group insurance data
+    fetchGroupInsurance()
+  }, [])
 
-  const [members] = useState<GroupMember[]>([
-    {
-      id: '1',
-      name: 'María García',
-      avatar: '/avatars/maria.jpg',
-      role: 'admin',
-      joinedAt: new Date('2024-01-01'),
-      contribution: 500,
-      policies: 2,
-      status: 'active'
-    },
-    {
-      id: '2',
-      name: 'Carlos García',
-      avatar: '/avatars/carlos.jpg',
-      role: 'member',
-      joinedAt: new Date('2024-01-15'),
-      contribution: 300,
-      policies: 1,
-      status: 'active'
-    },
-    {
-      id: '3',
-      name: 'Ana López',
-      avatar: '/avatars/ana.jpg',
-      role: 'moderator',
-      joinedAt: new Date('2024-02-01'),
-      contribution: 400,
-      policies: 2,
-      status: 'active'
-    }
-  ])
+  const fetchGroupInsurance = async () => {
+    try {
+      setLoading(true)
+      
+      // Fetch group insurance from contracts
+      if (contracts?.insurancePool && contracts?.policyNFT) {
+        const response = await fetch('/api/community/groups', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            insurancePool: contracts.insurancePool,
+            policyNFT: contracts.policyNFT,
+            oracle: contracts.oracle
+          })
+        })
 
-  const [policies] = useState<GroupPolicy[]>([
-    {
-      id: '1',
-      name: 'Insurance Familiar Completo',
-      type: 'health',
-      premium: 150,
-      coverage: 500000,
-      members: 12,
-      maxMembers: 20,
-      status: 'active',
-      startDate: new Date('2024-01-01'),
-      endDate: new Date('2024-12-31'),
-      claims: 3,
-      totalPaid: 75000
-    },
-    {
-      id: '2',
-      name: 'Protección Climática Agrícola',
-      type: 'weather',
-      premium: 200,
-      coverage: 1000000,
-      members: 8,
-      maxMembers: 15,
-      status: 'active',
-      startDate: new Date('2024-01-01'),
-      endDate: new Date('2024-12-31'),
-      claims: 1,
-      totalPaid: 250000
+        if (response.ok) {
+          const data = await response.json()
+          setGroups(data.groups || [])
+          setStats(data.stats || {})
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching group insurance:', error)
+    } finally {
+      setLoading(false)
     }
-  ])
-
-  const [votes] = useState<GroupVote[]>([
-    {
-      id: '1',
-      title: 'Aumentar cobertura de salud',
-      description: 'Proponemos aumentar la cobertura de salud de $500,000 a $750,000 MXN',
-      options: ['A favor', 'En contra', 'Abstención'],
-      votes: { '1': 'A favor', '2': 'A favor', '3': 'En contra' },
-      endDate: new Date('2024-02-15'),
-      status: 'active',
-      type: 'coverage_modification'
-    },
-    {
-      id: '2',
-      title: 'Aprobar nuevo miembro',
-      description: 'Aprobar la solicitud de Juan Pérez para unirse al grupo',
-      options: ['Aprobar', 'Rechazar'],
-      votes: { '1': 'Aprobar', '2': 'Aprobar' },
-      endDate: new Date('2024-02-10'),
-      status: 'closed',
-      type: 'member_approval'
-    }
-  ])
+  }
 
   const currentGroup = groups.find(g => g.id === selectedGroup)
 
@@ -218,6 +156,25 @@ export function GroupInsurance() {
       member: 'bg-green-500/20 text-green-400 border-green-500/30'
     }
     return colors[role as keyof typeof colors] || 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+  }
+
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case 'family': return <Heart className="w-5 h-5" />
+      case 'business': return <Shield className="w-5 h-5" />
+      case 'community': return <Users className="w-5 h-5" />
+      case 'regional': return <Globe className="w-5 h-5" />
+      default: return <Zap className="w-5 h-5" />
+    }
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return 'text-green-400'
+      case 'pending': return 'text-yellow-400'
+      case 'expired': return 'text-red-400'
+      default: return 'text-gray-400'
+    }
   }
 
   return (

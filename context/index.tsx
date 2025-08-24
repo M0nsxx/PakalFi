@@ -15,10 +15,10 @@ if (!projectId) {
 
 // Set up metadata
 const metadata = {
-  name: 'MicroSeguro',
+  name: 'PakalFi',
   description: 'Micro-seguros paramétricos inteligentes',
-  url: 'https://microseguro.mx', // origin must match your domain & subdomain
-  icons: ['https://microseguro.mx/logo.png']
+  url: 'https://pakalfi.mx', // origin must match your domain & subdomain
+  icons: ['https://pakalfi.mx/logo.png']
 }
 
 // Create the modal

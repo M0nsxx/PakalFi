@@ -29,12 +29,12 @@ export default function GruposPage() {
     {
       id: 1,
       name: 'Farmeres Unidos',
-      description: 'Community de agricultores que comparten experiencias sobre Micro-Climate y protección de cultivos',
+      description: 'Community de agricultores que comparten experiencias sobre Pakal-Climate y protección de cultivos',
       members: 1247,
       category: 'Agriculture',
       location: 'Nacional',
       image: '/api/placeholder/300/200',
-      tags: ['Micro-Climate', 'Agriculture', 'Cultivos'],
+      tags: ['Pakal-Climate', 'Agriculture', 'Cultivos'],
       recentActivity: '2 hours ago',
       verified: true,
       featured: true
@@ -42,12 +42,12 @@ export default function GruposPage() {
     {
       id: 2,
       name: 'Emprendedores Digitales',
-      description: 'Grupo para emprendedores que buscan proteger sus negocios con Micro-Security',
+      description: 'Grupo para emprendedores que buscan proteger sus negocios con Pakal-Security',
       members: 892,
       category: 'Entrepreneurship',
       location: 'CDMX',
       image: '/api/placeholder/300/200',
-      tags: ['Micro-Security', 'Entrepreneurship', 'Negocios'],
+      tags: ['Pakal-Security', 'Entrepreneurship', 'Negocios'],
       recentActivity: '1 hour ago',
       verified: true,
       featured: false
@@ -55,12 +55,12 @@ export default function GruposPage() {
     {
       id: 3,
       name: 'Health Familiar',
-      description: 'Community enfocada en el bienestar familiar y el uso de Micro-Health',
+      description: 'Community enfocada en el bienestar familiar y el uso de Pakal-Health',
       members: 2156,
       category: 'Health',
       location: 'Guadalajara',
       image: '/api/placeholder/300/200',
-      tags: ['Micro-Health', 'Familia', 'Bienestar'],
+      tags: ['Pakal-Health', 'Familia', 'Bienestar'],
       recentActivity: '30 min ago',
       verified: true,
       featured: true
@@ -68,12 +68,12 @@ export default function GruposPage() {
     {
       id: 4,
       name: 'Delivery Driveres Insurances',
-      description: 'Grupo para repartidores y conductores que utilizan Micro-Mobility',
+      description: 'Grupo para repartidores y conductores que utilizan Pakal-Mobility',
       members: 678,
       category: 'Transport',
       location: 'Monterrey',
       image: '/api/placeholder/300/200',
-      tags: ['Micro-Mobility', 'Transport', 'Seguridad'],
+      tags: ['Pakal-Mobility', 'Transport', 'Seguridad'],
       recentActivity: '45 min ago',
       verified: false,
       featured: false
@@ -86,7 +86,7 @@ export default function GruposPage() {
       category: 'Crafts',
       location: 'Oaxaca',
       image: '/api/placeholder/300/200',
-      tags: ['Micro-Security', 'Crafts', 'Cultura'],
+      tags: ['Pakal-Security', 'Crafts', 'Cultura'],
       recentActivity: '1 day ago',
       verified: true,
       featured: false
@@ -99,7 +99,7 @@ export default function GruposPage() {
       category: 'Education',
       location: 'Nacional',
       image: '/api/placeholder/300/200',
-      tags: ['Micro-Security', 'Students', 'Education'],
+      tags: ['Pakal-Security', 'Students', 'Education'],
       recentActivity: '3 hours ago',
       verified: true,
       featured: false
@@ -119,7 +119,7 @@ export default function GruposPage() {
   const upcomingEvents = [
     {
       id: 1,
-      title: 'Workshop: Cómo Maximizar tu Micro-Climate',
+      title: 'Workshop: Cómo Maximizar tu Pakal-Climate',
       group: 'Farmeres Unidos',
       date: '15 Dic, 2024',
       time: '10:00 AM',

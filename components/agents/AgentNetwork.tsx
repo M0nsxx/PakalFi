@@ -91,7 +91,7 @@ export function AgentNetwork() {
     {
       id: '1',
       name: 'María González',
-      email: 'maria.gonzalez@microseguro.mx',
+              email: 'maria.gonzalez@pakalfi.mx',
       phone: '+52 55 1234 5678',
       location: 'CDMX',
       status: 'active',
@@ -109,7 +109,7 @@ export function AgentNetwork() {
     {
       id: '2',
       name: 'Carlos Rodríguez',
-      email: 'carlos.rodriguez@microseguro.mx',
+              email: 'carlos.rodriguez@pakalfi.mx',
       phone: '+52 33 9876 5432',
       location: 'Guadalajara',
       status: 'active',
@@ -127,7 +127,7 @@ export function AgentNetwork() {
     {
       id: '3',
       name: 'Ana Martínez',
-      email: 'ana.martinez@microseguro.mx',
+              email: 'ana.martinez@pakalfi.mx',
       phone: '+52 81 5555 1234',
       location: 'Monterrey',
       status: 'active',
@@ -145,7 +145,7 @@ export function AgentNetwork() {
     {
       id: '4',
       name: 'Luis Pérez',
-      email: 'luis.perez@microseguro.mx',
+              email: 'luis.perez@pakalfi.mx',
       phone: '+52 222 333 4444',
       location: 'Puebla',
       status: 'pending',

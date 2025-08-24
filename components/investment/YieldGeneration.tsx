@@ -19,8 +19,11 @@ import {
   PieChart,
   Activity,
   Calendar,
-  Star
+  Star,
+  Users,
+  Globe
 } from 'lucide-react'
+import { getContracts } from '@/config/contracts'
 
 interface YieldStrategy {
   id: string
@@ -55,89 +58,53 @@ export function YieldGeneration() {
   const [showInvestModal, setShowInvestModal] = useState(false)
   const [showWithdrawModal, setShowWithdrawModal] = useState(false)
 
-  const [strategies] = useState<YieldStrategy[]>([
-    {
-      id: 'aave-lending',
-      name: 'Aave Lending Pool',
-      protocol: 'Aave',
-      type: 'lending',
-      apy: 8.5,
-      risk: 'low',
-      minAmount: 1000,
-      maxAmount: 100000,
-      invested: 25000,
-      available: 75000,
-      description: 'Préstamos seguros con garantías colateralizadas en Aave',
-      features: ['Garantías colateralizadas', 'Liquidación automática', 'APY estable'],
-      status: 'active'
-    },
-    {
-      id: 'uniswap-liquidity',
-      name: 'Uniswap V3 Liquidity',
-      protocol: 'Uniswap',
-      type: 'liquidity',
-      apy: 12.3,
-      risk: 'medium',
-      minAmount: 5000,
-      maxAmount: 50000,
-      invested: 15000,
-      available: 35000,
-      description: 'Provisión de liquidez en pools de Uniswap V3',
-      features: ['Fees de trading', 'Posiciones concentradas', 'Gestión de riesgo'],
-      status: 'active'
-    },
-    {
-      id: 'compound-staking',
-      name: 'Compound Staking',
-      protocol: 'Compound',
-      type: 'staking',
-      apy: 6.8,
-      risk: 'low',
-      minAmount: 500,
-      maxAmount: 25000,
-      invested: 10000,
-      available: 15000,
-      description: 'Staking de tokens COMP con recompensas automáticas',
-      features: ['Recompensas automáticas', 'Sin lock-up', 'APY compuesto'],
-      status: 'active'
-    },
-    {
-      id: 'curve-yield',
-      name: 'Curve Yield Farming',
-      protocol: 'Curve',
-      type: 'yield_farming',
-      apy: 15.2,
-      risk: 'high',
-      minAmount: 2000,
-      maxAmount: 30000,
-      invested: 8000,
-      available: 22000,
-      description: 'Yield farming en pools de Curve con tokens de gobernanza',
-      features: ['Tokens de gobernanza', 'APY variable', 'Estrategia avanzada'],
-      status: 'active'
-    }
-  ])
+  const [strategies, setStrategies] = useState<YieldStrategy[]>([])
+  const [stats, setStats] = useState({
+    totalValue: 0,
+    totalParticipants: 0,
+    averageApy: 0,
+    activeStrategies: 0
+  })
+  const [contracts, setContracts] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
-  const [investments] = useState<Investment[]>([
-    {
-      id: '1',
-      strategyId: 'aave-lending',
-      amount: 5000,
-      startDate: new Date('2024-01-01'),
-      endDate: new Date('2024-12-31'),
-      earned: 425,
-      status: 'active'
-    },
-    {
-      id: '2',
-      strategyId: 'uniswap-liquidity',
-      amount: 3000,
-      startDate: new Date('2024-01-15'),
-      endDate: new Date('2024-12-31'),
-      earned: 369,
-      status: 'active'
+  useEffect(() => {
+    // Get deployed contracts
+    const deployedContracts = getContracts(10143) // Monad testnet
+    setContracts(deployedContracts)
+    
+    // Fetch yield strategies
+    fetchYieldStrategies()
+  }, [])
+
+  const fetchYieldStrategies = async () => {
+    try {
+      setLoading(true)
+      
+      // Fetch yield strategies from contracts
+      if (contracts?.insurancePool && contracts?.reinsuranceToken) {
+        const response = await fetch('/api/investment/strategies', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            insurancePool: contracts.insurancePool,
+            reinsuranceToken: contracts.reinsuranceToken,
+            oracle: contracts.oracle
+          })
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setStrategies(data.strategies || [])
+          setStats(data.stats || {})
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching yield strategies:', error)
+    } finally {
+      setLoading(false)
     }
-  ])
+  }
 
   const getRiskColor = (risk: string) => {
     const colors = {
@@ -146,6 +113,15 @@ export function YieldGeneration() {
       high: 'bg-red-500/20 text-red-400 border-red-500/30'
     }
     return colors[risk as keyof typeof colors] || 'bg-gray-500/20 text-gray-400 border-gray-500/30'
+  }
+
+  const getRiskBg = (risk: string) => {
+    switch (risk) {
+      case 'low': return 'bg-green-500/20'
+      case 'medium': return 'bg-yellow-500/20'
+      case 'high': return 'bg-red-500/20'
+      default: return 'bg-gray-500/20'
+    }
   }
 
   const getTypeIcon = (type: string) => {

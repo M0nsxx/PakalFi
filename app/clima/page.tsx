@@ -143,7 +143,7 @@ export default function ClimaPage() {
             <div className="flex items-center justify-center space-x-2 mb-6">
               <Cloud className="w-8 h-8 text-blue-400" />
               <h1 className="text-4xl md:text-6xl font-bold text-white text-center mb-6">
-                Micro-Climate
+                Pakal-Climate
               </h1>
             </div>
             <p className="text-xl text-gray-300 text-center max-w-3xl mx-auto mb-8">
@@ -571,7 +571,7 @@ export default function ClimaPage() {
               Ready to protect yourself from the weather?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join thousands of farmers who already trust Micro-Climate
+              Join thousands of farmers who already trust Pakal-Climate
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <WalletButton className="bg-gradient-to-r from-blue-500 to-cyan-600 text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all" />

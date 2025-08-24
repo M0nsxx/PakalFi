@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Slider } from '@/components/ui/slider'
 import { Heart, Cloud, Shield, Car, Zap, TrendingUp } from 'lucide-react'
+import { getContracts } from '@/config/contracts'
 
 export function InsuranceCalculator() {
   const [isMounted, setIsMounted] = useState(false)
@@ -19,9 +20,14 @@ export function InsuranceCalculator() {
   const [calculatedPremium, setCalculatedPremium] = useState(0)
   const [calculatedCoverage, setCalculatedCoverage] = useState(0)
   const [riskScore, setRiskScore] = useState(0)
+  const [contracts, setContracts] = useState<any>(null)
   
   useEffect(() => {
     setIsMounted(true)
+    
+    // Get deployed contracts
+    const deployedContracts = getContracts(10143) // Monad testnet
+    setContracts(deployedContracts)
     
     const premium = calculatePremium()
     const coverage = calculateCoverage()
@@ -59,19 +65,53 @@ export function InsuranceCalculator() {
     let score = 50 // Base score
     
     // Age factor
-    if (age > 60) score += 20
-    else if (age > 40) score += 10
-    else if (age < 25) score -= 10
+    if (age < 25) score -= 10
+    else if (age > 60) score += 20
     
     // Location factor
-    if (location === 'high-risk') score += 30
-    else if (location === 'rural') score -= 10
+    if (location === 'high-risk') score += 15
+    else if (location === 'rural') score -= 5
     
     // Product factor
-    const productCount = Object.values(products).filter(Boolean).length
-    score += productCount * 5
+    if (products.health) score += 5
+    if (products.weather) score += 10
+    if (products.security) score += 8
+    if (products.mobility) score += 12
     
     return Math.max(0, Math.min(100, score))
+  }
+
+  const handlePurchase = async () => {
+    if (!contracts) return
+    
+    try {
+      // Create policy using deployed contracts
+      const response = await fetch('/api/policies/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          age,
+          location,
+          products,
+          premium: calculatedPremium,
+          coverage: calculatedCoverage,
+          riskScore,
+          contracts: {
+            insurancePool: contracts.insurancePool,
+            policyNFT: contracts.policyNFT,
+            oracle: contracts.oracle
+          }
+        })
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        console.log('Policy created:', result)
+        // Handle success
+      }
+    } catch (error) {
+      console.error('Error creating policy:', error)
+    }
   }
   
   const getRiskColor = (score: number) => {
@@ -286,7 +326,7 @@ export function InsuranceCalculator() {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-300">MicroInsurance</span>
+                <span className="text-gray-300">PakalFi</span>
                 <span className="text-green-400 font-bold" suppressHydrationWarning>
                   {isMounted ? `$${calculatedPremium} MXN/month` : '$0 MXN/month'}
                 </span>

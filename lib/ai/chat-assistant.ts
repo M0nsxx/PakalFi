@@ -7,7 +7,7 @@ export interface ChatResponse {
 export class AIChatAssistant {
   private static responses = {
     greeting: {
-      content: `Hello! I'm your MicroInsurance AI assistant. How can I help you today? I can help you with:
+      content: `Hello! I'm your PakalFi AI assistant. How can I help you today? I can help you with:
 
 • Insurance quotes and coverage
 • Product information  
@@ -119,7 +119,7 @@ Would you like to:
 • Multi-language support
 • Direct connection to specialists
 
-📧 **Email**: info@microseguro.com
+      📧 **Email**: info@pakalfi.com
 • Response within 24 hours
 • Detailed assistance
 • Document submission
@@ -181,7 +181,7 @@ Would you like me to:
     },
 
     default: {
-      content: `Thank you for your message! I'm here to help with any questions about MicroInsurance. 
+      content: `Thank you for your message! I'm here to help with any questions about PakalFi. 
 
 You can ask me about:
 • Insurance quotes and coverage options

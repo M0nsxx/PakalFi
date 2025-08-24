@@ -13,7 +13,9 @@ import {
   MessageCircle,
   Calendar,
   MapPin,
-  CloudRain
+  CloudRain,
+  Globe,
+  TrendingUp
 } from 'lucide-react'
 import { WalletButton } from '@/components/ui/WalletButton'
 
@@ -107,7 +109,7 @@ export default function TestimoniosPage() {
 
   const stats = [
     { number: '15,432', label: 'Satisfied Users', icon: <Users className="w-6 h-6" /> },
-    { number: '98.5%', label: 'Tasa de Satisfaction', icon: <Heart className="w-6 h-6" /> },
+    { number: '98.5%', label: 'Satisfaction Rate', icon: <Heart className="w-6 h-6" /> },
     { number: '4.9/5', label: 'Average Rating', icon: <Star className="w-6 h-6" /> },
     { number: '2,847', label: 'Successful Cases', icon: <CheckCircle className="w-6 h-6" /> }
   ]
@@ -136,8 +138,8 @@ export default function TestimoniosPage() {
               Customer Testimonials
             </h1>
             <p className="text-xl text-gray-300 text-center max-w-3xl mx-auto mb-8">
-              Real stories from Mexican families who have experienced the benefits of micro-insurance. 
-              See how we've helped protect thousands of lives.
+              Real stories from families globally who have experienced the benefits of micro-insurance. 
+              See how we've helped protect thousands of lives across 15+ countries.
             </p>
           </motion.div>
 
@@ -167,6 +169,79 @@ export default function TestimoniosPage() {
         </div>
       </section>
 
+      {/* Global Impact Section */}
+      <section className="py-20 px-4 bg-gray-800/30">
+        <div className="container mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-white mb-6">
+              Global Impact
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Stories from our global community across Latin America, Africa, and Southeast Asia
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur border border-green-500/30 rounded-2xl p-8 text-center"
+            >
+              <Globe className="w-16 h-16 text-green-400 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">Latin America</h3>
+              <p className="text-gray-300 mb-6">Mexico, Brazil, Colombia, Argentina, Peru</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <div>• 5,000+ families protected</div>
+                <div>• $2.5M in claims paid</div>
+                <div>• 98% satisfaction rate</div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur border border-blue-500/30 rounded-2xl p-8 text-center"
+            >
+              <Award className="w-16 h-16 text-blue-400 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">Africa</h3>
+              <p className="text-gray-300 mb-6">Nigeria, Kenya, South Africa, Ghana, Egypt</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <div>• 3,200+ families protected</div>
+                <div>• $1.8M in claims paid</div>
+                <div>• Mobile money integration</div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur border border-purple-500/30 rounded-2xl p-8 text-center"
+            >
+              <TrendingUp className="w-16 h-16 text-purple-400 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">Southeast Asia</h3>
+              <p className="text-gray-300 mb-6">Indonesia, Philippines, Vietnam, India, Bangladesh</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <div>• 7,200+ families protected</div>
+                <div>• $3.2M in claims paid</div>
+                <div>• High remittance adoption</div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials Grid */}
       <section className="py-20 px-4">
         <div className="container mx-auto max-w-7xl">
@@ -181,7 +256,7 @@ export default function TestimoniosPage() {
               Featured Stories
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Inspiring stories from our community
+              Inspiring stories from our global community
             </p>
           </motion.div>
 
@@ -194,7 +269,7 @@ export default function TestimoniosPage() {
                 <div>
                   <h3 className="text-white font-semibold">María González</h3>
                   <p className="text-gray-300 text-sm">Small Business Owner</p>
-                  <p className="text-gray-400 text-sm">Guadalajara, Jalisco</p>
+                  <p className="text-gray-400 text-sm">Guadalajara, Mexico</p>
                 </div>
               </div>
               <p className="text-gray-300 mb-6">
@@ -246,7 +321,7 @@ export default function TestimoniosPage() {
                 <div>
                   <h3 className="text-white font-semibold">Ana Martínez</h3>
                   <p className="text-gray-300 text-sm">Housewife</p>
-                  <p className="text-gray-400 text-sm">Monterrey, Nuevo León</p>
+                  <p className="text-gray-400 text-sm">Monterrey, Mexico</p>
                 </div>
               </div>
               <p className="text-gray-300 mb-6">
@@ -281,7 +356,7 @@ export default function TestimoniosPage() {
               More Success Stories
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Read more testimonials from our satisfied customers
+              Read more testimonials from our satisfied customers globally
             </p>
           </motion.div>
 
@@ -294,7 +369,7 @@ export default function TestimoniosPage() {
                 <div>
                   <h3 className="text-white font-semibold">Luis Torres</h3>
                   <p className="text-gray-300 text-sm">Farmer</p>
-                  <p className="text-gray-400 text-sm">Sinaloa</p>
+                  <p className="text-gray-400 text-sm">Sinaloa, Mexico</p>
                 </div>
               </div>
               <p className="text-gray-300 mb-6">
@@ -320,7 +395,7 @@ export default function TestimoniosPage() {
                 <div>
                   <h3 className="text-white font-semibold">Patricia López</h3>
                   <p className="text-gray-300 text-sm">Teacher</p>
-                  <p className="text-gray-400 text-sm">Puebla</p>
+                  <p className="text-gray-400 text-sm">Puebla, Mexico</p>
                 </div>
               </div>
               <p className="text-gray-300 mb-6">
@@ -346,7 +421,7 @@ export default function TestimoniosPage() {
                 <div>
                   <h3 className="text-white font-semibold">Roberto Silva</h3>
                   <p className="text-gray-300 text-sm">Construction Worker</p>
-                  <p className="text-gray-400 text-sm">Tijuana, Baja California</p>
+                  <p className="text-gray-400 text-sm">Tijuana, Mexico</p>
                 </div>
               </div>
               <p className="text-gray-300 mb-6">
@@ -390,7 +465,7 @@ export default function TestimoniosPage() {
               <Users className="w-12 h-12 text-green-400 mb-4" />
               <h3 className="text-xl font-bold text-white mb-3">Community Impact</h3>
               <p className="text-gray-300 text-sm">
-                Join thousands of families sharing their success stories and helping others.
+                Join thousands of families sharing their success stories and helping others globally.
               </p>
             </div>
             <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 backdrop-blur border border-blue-500/20 rounded-2xl p-6">
@@ -428,10 +503,10 @@ export default function TestimoniosPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl font-bold text-white mb-6">
-              Join Our Community
+              Join Our Global Community
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-              Share your story and help others discover the benefits of micro-insurance
+              Share your story and help others discover the benefits of micro-insurance globally
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <WalletButton />

@@ -8,8 +8,6 @@ import {
   X, 
   Shield, 
   ChevronDown, 
-  Phone, 
-  MessageCircle, 
   User,
   Wallet,
   Settings,
@@ -18,11 +16,14 @@ import {
   TrendingUp,
   Users,
   Building,
-  Mail,
-  MapPin,
-  Clock
+  Clock,
+  Play
 } from 'lucide-react'
 import { WalletButton } from './WalletButton'
+import { MonadStatus } from './MonadStatus'
+import { PWAInstallButton } from './PWAInstallButton'
+import { useWallet } from '@/hooks/useWallet'
+import { Button } from './Button'
 
 interface NavItem {
   label: string
@@ -63,16 +64,17 @@ const navItems: NavItem[] = [
       { label: 'FAQ', href: '/faq', icon: <HelpCircle className="w-4 h-4" /> }
     ]
   },
-  { label: 'About Us', href: '/nosotros', icon: <Building className="w-4 h-4" /> }
+  { label: 'Demo', href: '/hackathon-demo', icon: <Play className="w-4 h-4" /> },
+  { label: 'About Us', href: '/nosotros', icon: <Building className="w-4 h-4" /> },
+  { label: 'Dashboard', href: '/dashboard', icon: <TrendingUp className="w-4 h-4" /> }
 ]
 
 export function Navbar() {
   const router = useRouter()
+  const { isConnected } = useWallet()
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
-  const [showContactModal, setShowContactModal] = useState(false)
-  const [showQuoteModal, setShowQuoteModal] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,6 +83,25 @@ export function Navbar() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false)
+        setActiveDropdown(null)
+      }
+    }
+    
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'hidden'
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
 
   const handleNavClick = (href: string) => {
     setIsOpen(false)
@@ -102,23 +123,7 @@ export function Navbar() {
     setActiveDropdown(activeDropdown === label ? null : label)
   }
 
-  const openContactModal = () => {
-    setShowContactModal(true)
-    setIsOpen(false)
-    setActiveDropdown(null)
-  }
 
-  const openQuoteModal = () => {
-    setShowQuoteModal(true)
-    setIsOpen(false)
-    setActiveDropdown(null)
-  }
-
-  const openWhatsApp = () => {
-    const phoneNumber = '525512345678'
-    const message = encodeURIComponent('Hello, I\'m interested in getting an insurance quote with MicroInsurance')
-    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank')
-  }
 
   return (
     <>
@@ -133,27 +138,39 @@ export function Navbar() {
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* Logo */}
-            <motion.button
-              onClick={() => router.push('/')}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex items-center space-x-2 hover:scale-105 transition-transform focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg p-1"
-              aria-label="Go to home"
-              tabIndex={0}
-            >
-              <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                <Shield className="w-6 h-6 text-white" />
+            {/* Logo and Monad Status */}
+            <div className="flex items-center space-x-6">
+              <motion.button
+                onClick={() => router.push('/')}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                className="flex items-center space-x-2 hover:scale-105 transition-transform focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg p-1"
+                aria-label="Go to home"
+                tabIndex={0}
+              >
+                <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-xl lg:text-2xl font-bold text-white">
+                  PakalFi
+                </span>
+              </motion.button>
+
+              {/* Monad Status Indicators */}
+              <div className="hidden lg:block">
+                <MonadStatus />
               </div>
-              <span className="text-xl lg:text-2xl font-bold text-white">
-                MicroInsurance
-              </span>
-            </motion.button>
+            </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8">
-              {navItems.map((item) => (
+            <div className="hidden lg:flex items-center space-x-6">
+              {navItems.map((item) => {
+                // Hide Dashboard if not connected
+                if (item.label === 'Dashboard' && !isConnected) {
+                  return null
+                }
+                return (
                 <div key={item.label} className="relative group">
                   {item.children ? (
                     <button
@@ -211,40 +228,21 @@ export function Navbar() {
                     </AnimatePresence>
                   )}
                 </div>
-              ))}
+              )
+              })}
             </div>
 
-            {/* Desktop CTA Buttons */}
+                        {/* Desktop CTA Buttons */}
             <div className="hidden lg:flex items-center space-x-4">
-              <WalletButton />
+              <WalletButton className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-full font-medium hover:shadow-lg transition-all" />
               
-              <button
-                onClick={openContactModal}
-                className="flex items-center space-x-2 text-white hover:text-green-400 transition-colors py-2 px-3 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-                tabIndex={0}
-                aria-label="Contact us"
-              >
-                <Phone className="w-4 h-4" />
-                <span>Contact</span>
-              </button>
-              
-              <button
-                onClick={openQuoteModal}
-                className="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg hover:shadow-green-500/25 transition-all focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-                tabIndex={0}
-                aria-label="Get insurance quote"
-              >
-                <div className="flex items-center space-x-2">
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Get Quote</span>
-                </div>
-              </button>
+              <PWAInstallButton />
             </div>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2 text-white hover:text-green-400 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg"
+              className="lg:hidden p-2.5 text-white hover:text-green-400 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg hover:bg-white/10"
               aria-label={isOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isOpen}
               tabIndex={0}
@@ -275,222 +273,119 @@ export function Navbar() {
             </button>
           </div>
 
-          {/* Mobile Menu */}
+          {/* Mobile Menu Overlay */}
           <AnimatePresence>
             {isOpen && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="lg:hidden overflow-hidden"
-              >
-                <div className="py-4 border-t border-white/10">
-                  {navItems.map((item) => (
-                    <div key={item.label} className="mb-2">
-                      {item.children ? (
-                        <div>
+              <>
+                {/* Backdrop */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+                  onClick={() => setIsOpen(false)}
+                />
+                
+                {/* Menu Content */}
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="lg:hidden absolute top-full left-0 right-0 bg-gray-900/98 backdrop-blur-md border-b border-white/10 shadow-2xl z-50"
+                >
+                <div className="px-4 py-6 max-h-[80vh] overflow-y-auto">
+                  {/* Mobile Monad Status */}
+                  <div className="mb-6">
+                    <MonadStatus />
+                  </div>
+                  
+                  {/* Navigation Items */}
+                  <div className="space-y-2 mb-6">
+                    {navItems.map((item) => {
+                      // Hide Dashboard if not connected
+                      if (item.label === 'Dashboard' && !isConnected) {
+                        return null
+                      }
+                      return (
+                      <div key={item.label} className="border-b border-white/5 last:border-b-0">
+                        {item.children ? (
+                          <div>
+                            <button
+                              onClick={() => toggleDropdown(item.label)}
+                              className="w-full flex items-center justify-between text-white hover:text-green-400 transition-colors py-4 px-3 rounded-lg hover:bg-white/5 focus:outline-none focus:bg-white/5"
+                              aria-expanded={activeDropdown === item.label}
+                              aria-haspopup="true"
+                              tabIndex={0}
+                            >
+                              <div className="flex items-center space-x-3">
+                                <div className="w-5 h-5 flex items-center justify-center">
+                                  {item.icon}
+                                </div>
+                                <span className="font-medium">{item.label}</span>
+                              </div>
+                              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === item.label ? 'rotate-180' : ''}`} />
+                            </button>
+                            
+                            <AnimatePresence>
+                              {activeDropdown === item.label && (
+                                <motion.div
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: 'auto' }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="overflow-hidden bg-gray-800/30 rounded-lg mx-3 mb-2"
+                                >
+                                  {item.children.map((child, index) => (
+                                    <button
+                                      key={child.label}
+                                      onClick={() => handleNavClick(child.href)}
+                                      className="w-full flex items-center space-x-3 px-4 py-3 text-gray-300 hover:text-green-400 hover:bg-white/5 transition-colors focus:outline-none focus:bg-white/5 first:rounded-t-lg last:rounded-b-lg"
+                                      tabIndex={0}
+                                    >
+                                      <div className="w-4 h-4 flex items-center justify-center">
+                                        {child.icon}
+                                      </div>
+                                      <span className="text-sm">{child.label}</span>
+                                    </button>
+                                  ))}
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        ) : (
                           <button
-                            onClick={() => toggleDropdown(item.label)}
-                            className="w-full flex items-center justify-between text-white hover:text-green-400 transition-colors py-3 px-4 rounded-lg hover:bg-white/5 focus:outline-none focus:bg-white/5"
-                            aria-expanded={activeDropdown === item.label}
-                            aria-haspopup="true"
+                            onClick={() => handleNavClick(item.href)}
+                            className="w-full flex items-center space-x-3 text-white hover:text-green-400 transition-colors py-4 px-3 rounded-lg hover:bg-white/5 focus:outline-none focus:bg-white/5"
                             tabIndex={0}
                           >
-                            <div className="flex items-center space-x-3">
+                            <div className="w-5 h-5 flex items-center justify-center">
                               {item.icon}
-                              <span>{item.label}</span>
                             </div>
-                            <ChevronDown className={`w-4 h-4 transition-transform ${activeDropdown === item.label ? 'rotate-180' : ''}`} />
+                            <span className="font-medium">{item.label}</span>
                           </button>
-                          
-                          <AnimatePresence>
-                            {activeDropdown === item.label && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.2 }}
-                                className="ml-8 overflow-hidden"
-                              >
-                                {item.children.map((child) => (
-                                  <button
-                                    key={child.label}
-                                    onClick={() => handleNavClick(child.href)}
-                                    className="w-full flex items-center space-x-3 px-4 py-2 text-gray-300 hover:text-green-400 transition-colors focus:outline-none"
-                                    tabIndex={0}
-                                  >
-                                    {child.icon}
-                                    <span>{child.label}</span>
-                                  </button>
-                                ))}
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => handleNavClick(item.href)}
-                          className="w-full flex items-center space-x-3 text-white hover:text-green-400 transition-colors py-3 px-4 rounded-lg hover:bg-white/5 focus:outline-none focus:bg-white/5"
-                          tabIndex={0}
-                        >
-                          {item.icon}
-                          <span>{item.label}</span>
-                        </button>
-                      )}
-                    </div>
-                  ))}
+                        )}
+                      </div>
+                    )
+                    })}
+                  </div>
                   
                   {/* Mobile CTA Buttons */}
-                  <div className="mt-6 pt-4 border-t border-white/10 space-y-3">
-                    <WalletButton className="w-full" />
+                  <div className="space-y-3 pt-4 border-t border-white/10">
+                    <WalletButton className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-full font-medium hover:shadow-lg transition-all" />
                     
-                    <button
-                      onClick={openContactModal}
-                      className="w-full flex items-center justify-center space-x-2 text-white hover:text-green-400 transition-colors py-3 px-4 rounded-lg hover:bg-white/5 focus:outline-none focus:bg-white/5"
-                      tabIndex={0}
-                    >
-                      <Phone className="w-4 h-4" />
-                      <span>Contact</span>
-                    </button>
-                    
-                    <button
-                      onClick={openQuoteModal}
-                      className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 px-4 rounded-full font-semibold hover:shadow-lg hover:shadow-green-500/25 transition-all focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900"
-                      tabIndex={0}
-                    >
-                      <div className="flex items-center justify-center space-x-2">
-                        <MessageCircle className="w-4 h-4" />
-                        <span>Get Quote</span>
-                      </div>
-                    </button>
+                    <PWAInstallButton className="w-full" />
                   </div>
                 </div>
-              </motion.div>
+                </motion.div>
+              </>
             )}
           </AnimatePresence>
         </div>
       </nav>
 
-      {/* Contact Modal */}
-      <AnimatePresence>
-        {showContactModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => setShowContactModal(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="bg-gray-900/95 backdrop-blur-md border border-white/10 rounded-2xl p-8 max-w-md w-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-white mb-2">Contact Us</h2>
-                <p className="text-gray-300">Get in touch with our team</p>
-              </div>
 
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3 p-4 bg-gray-800/50 rounded-lg">
-                  <Phone className="w-5 h-5 text-green-400" />
-                  <div>
-                    <p className="text-white font-semibold">800-MICRO-SEGURO</p>
-                    <p className="text-gray-400 text-sm">Available 24/7</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-3 p-4 bg-gray-800/50 rounded-lg">
-                  <Mail className="w-5 h-5 text-green-400" />
-                  <div>
-                    <p className="text-white font-semibold">info@microseguro.com</p>
-                    <p className="text-gray-400 text-sm">Response within 24h</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-3 p-4 bg-gray-800/50 rounded-lg">
-                  <MapPin className="w-5 h-5 text-green-400" />
-                  <div>
-                    <p className="text-white font-semibold">CDMX, Mexico</p>
-                    <p className="text-gray-400 text-sm">Visit our offices</p>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => setShowContactModal(false)}
-                className="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 px-4 rounded-full font-semibold hover:shadow-lg hover:shadow-green-500/25 transition-all"
-              >
-                Close
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Quote Modal */}
-      <AnimatePresence>
-        {showQuoteModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => setShowQuoteModal(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="bg-gray-900/95 backdrop-blur-md border border-white/10 rounded-2xl p-8 max-w-md w-full"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="text-center mb-6">
-                <h2 className="text-2xl font-bold text-white mb-2">Get Your Quote</h2>
-                <p className="text-gray-300">Choose how you'd like to get your insurance quote</p>
-              </div>
-
-              <div className="space-y-4">
-                <button
-                  onClick={openWhatsApp}
-                  className="w-full flex items-center justify-center space-x-3 p-4 bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
-                >
-                  <MessageCircle className="w-5 h-5 text-white" />
-                  <span className="text-white font-semibold">Get Quote via WhatsApp</span>
-                </button>
-
-                <button
-                  onClick={() => router.push('/calculadora')}
-                  className="w-full flex items-center justify-center space-x-3 p-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors"
-                >
-                  <TrendingUp className="w-5 h-5 text-white" />
-                  <span className="text-white font-semibold">Use Our Calculator</span>
-                </button>
-
-                <button
-                  onClick={() => router.push('/evaluacion-riesgo')}
-                  className="w-full flex items-center justify-center space-x-3 p-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors"
-                >
-                  <Shield className="w-5 h-5 text-white" />
-                  <span className="text-white font-semibold">Risk Assessment</span>
-                </button>
-              </div>
-
-              <button
-                onClick={() => setShowQuoteModal(false)}
-                className="w-full mt-6 bg-gray-700 hover:bg-gray-600 text-white py-3 px-4 rounded-full font-semibold transition-colors"
-              >
-                Close
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </>
   )
 }

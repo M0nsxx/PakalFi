@@ -1,444 +1,583 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  Cell,
-  AreaChart,
-  Area
-} from 'recharts'
-import {
-  TrendingUp,
-  TrendingDown,
-  Users,
-  DollarSign,
-  Shield,
-  AlertTriangle,
-  Activity,
-  MapPin,
-  Clock,
-  Target,
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { 
+  TrendingUp, 
+  Users, 
+  DollarSign, 
+  Shield, 
+  Activity, 
+  Globe,
   Zap,
+  Smartphone,
+  Award,
   BarChart3,
-  Star,
-  CloudRain,
-  Car,
-  Heart,
-  Smartphone
-} from 'lucide-react'
+  PieChart,
+  LineChart,
+  Calendar,
+  Clock,
+  AlertTriangle,
+  CheckCircle,
+  XCircle,
+  ArrowUpRight,
+  ArrowDownRight
+} from 'lucide-react';
 
-interface AnalyticsData {
-  totalUsers: number
-  activePolicies: number
-  totalPremiums: number
-  totalClaims: number
-  claimsToday: number
-  fraudAttempts: number
-  weatherAlerts: number
-  avgClaimTime: number
-  satisfactionRate: number
-  revenueGrowth: number
-  claimsByType: Array<{ type: string; count: number; amount: number }>
-  claimsByLocation: Array<{ location: string; count: number; amount: number }>
-  claimsTimeline: Array<{ date: string; claims: number; amount: number }>
-  fraudTrends: Array<{ date: string; attempts: number; blocked: number }>
-  weatherEvents: Array<{ date: string; events: number; severity: string }>
-  userGrowth: Array<{ date: string; users: number; policies: number }>
-}
+// Import partner integrations
+import { useEnvioData, useRiskMetrics, useWeatherEvents } from '@/lib/integrations/envioInsuranceAnalytics';
+import { useSDGMetrics } from '@/lib/integrations/sdgInsuranceImpact';
+import { useReownInsurance } from '@/lib/integrations/reownIntegration';
 
 export default function AdminAnalytics() {
-  const [data, setData] = useState<AnalyticsData | null>(null)
-  const [timeRange, setTimeRange] = useState('7d')
-  const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState('overview');
+  const [timeRange, setTimeRange] = useState('24h');
 
-  useEffect(() => {
-    fetchAnalyticsData()
-    const interval = setInterval(fetchAnalyticsData, 30000) // Update every 30 seconds
-    return () => clearInterval(interval)
-  }, [timeRange])
+  // Partner integrations data
+  const { metrics: envioMetrics, claims: liveClaims, loading: envioLoading } = useEnvioData();
+  const { riskMetrics, loading: riskLoading } = useRiskMetrics();
+  const { weatherEvents, loading: weatherLoading } = useWeatherEvents();
+  const { impact: sdgImpact, metrics: sdgMetrics, loading: sdgLoading } = useSDGMetrics();
+  const { appKit, isConnected, userData } = useReownInsurance();
 
-  const fetchAnalyticsData = async () => {
-    try {
-      const response = await fetch(`/api/admin/analytics?range=${timeRange}`)
-      const analyticsData = await response.json()
-      setData(analyticsData)
-    } catch (error) {
-      console.error('Error fetching analytics:', error)
-      // Use mock data for demo
-      setData(getMockData())
-    } finally {
-      setLoading(false)
-    }
-  }
+  // Mock data for demonstration
+  const mockData = {
+    totalPolicies: 15432,
+    activeClaims: 89,
+    totalPremiums: 125000,
+    totalPayouts: 45000,
+    profitMargin: 64,
+    customerSatisfaction: 98.5,
+    gaslessTransactions: 2340,
+    appClipUsage: 1560,
+    savingsGoals: 890,
+    sdgAlignment: 87.3
+  };
 
-  const getMockData = (): AnalyticsData => ({
-    totalUsers: 15420,
-    activePolicies: 12850,
-    totalPremiums: 2850000,
-    totalClaims: 1250,
-    claimsToday: 23,
-    fraudAttempts: 45,
-    weatherAlerts: 12,
-    avgClaimTime: 1.2,
-    satisfactionRate: 94.5,
-    revenueGrowth: 12.8,
-    claimsByType: [
-      { type: 'Health', count: 450, amount: 11250000 },
-      { type: 'Clima', count: 320, amount: 32000000 },
-      { type: 'Seguridad', count: 280, amount: 14000000 },
-      { type: 'Movilidad', count: 200, amount: 15000000 }
-    ],
-    claimsByLocation: [
-      { location: 'CDMX', count: 380, amount: 9500000 },
-      { location: 'Guadalajara', count: 250, amount: 6250000 },
-      { location: 'Monterrey', count: 220, amount: 5500000 },
-      { location: 'Puebla', count: 180, amount: 4500000 },
-      { location: 'Otros', count: 220, amount: 5500000 }
-    ],
-    claimsTimeline: [
-      { date: '2024-01-01', claims: 15, amount: 375000 },
-      { date: '2024-01-02', claims: 18, amount: 450000 },
-      { date: '2024-01-03', claims: 12, amount: 300000 },
-      { date: '2024-01-04', claims: 25, amount: 625000 },
-      { date: '2024-01-05', claims: 20, amount: 500000 },
-      { date: '2024-01-06', claims: 16, amount: 400000 },
-      { date: '2024-01-07', claims: 23, amount: 575000 }
-    ],
-    fraudTrends: [
-      { date: '2024-01-01', attempts: 8, blocked: 7 },
-      { date: '2024-01-02', attempts: 12, blocked: 11 },
-      { date: '2024-01-03', attempts: 6, blocked: 5 },
-      { date: '2024-01-04', attempts: 15, blocked: 14 },
-      { date: '2024-01-05', attempts: 10, blocked: 9 },
-      { date: '2024-01-06', attempts: 7, blocked: 6 },
-      { date: '2024-01-07', attempts: 13, blocked: 12 }
-    ],
-    weatherEvents: [
-      { date: '2024-01-01', events: 2, severity: 'medium' },
-      { date: '2024-01-02', events: 1, severity: 'low' },
-      { date: '2024-01-03', events: 4, severity: 'high' },
-      { date: '2024-01-04', events: 3, severity: 'medium' },
-      { date: '2024-01-05', events: 2, severity: 'low' },
-      { date: '2024-01-06', events: 1, severity: 'low' },
-      { date: '2024-01-07', events: 5, severity: 'extreme' }
-    ],
-    userGrowth: [
-      { date: '2024-01-01', users: 15000, policies: 12500 },
-      { date: '2024-01-02', users: 15100, policies: 12600 },
-      { date: '2024-01-03', users: 15200, policies: 12700 },
-      { date: '2024-01-04', users: 15300, policies: 12800 },
-      { date: '2024-01-05', users: 15400, policies: 12900 },
-      { date: '2024-01-06', users: 15410, policies: 12950 },
-      { date: '2024-01-07', users: 15420, policies: 13000 }
-    ]
-  })
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500 mx-auto"></div>
-          <p className="text-white mt-4 text-xl">Cargando analytics...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (!data) return null
-
-  const COLORS = ['#10B981', '#3B82F6', '#EF4444', '#F59E0B', '#8B5CF6']
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: BarChart3 },
+    { id: 'partners', label: 'Partner Integrations', icon: Globe },
+    { id: 'risk', label: 'Risk Analytics', icon: Shield },
+    { id: 'impact', label: 'Social Impact', icon: Award },
+    { id: 'realtime', label: 'Live Activity', icon: Activity }
+  ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl md:text-6xl font-bold text-white text-center mb-6">
-          Admin Analytics
-        </h1>
-        <p className="text-xl text-gray-300 text-center max-w-3xl mx-auto mb-8">
-          Comprehensive analytics and insights for platform management. 
-          Monitor performance, user behavior, and business metrics.
-        </p>
-        
-        {/* Time Range Selector */}
-        <div className="flex gap-2 mt-4">
-          {['1d', '7d', '30d', '90d'].map((range) => (
+      <div className="bg-black/20 backdrop-blur border-b border-gray-800">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">MicroInsurance Analytics</h1>
+              <p className="text-gray-400">Global parametric insurance platform dashboard</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <select
+                value={timeRange}
+                onChange={(e) => setTimeRange(e.target.value)}
+                className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white"
+              >
+                <option value="24h">Last 24 Hours</option>
+                <option value="7d">Last 7 Days</option>
+                <option value="30d">Last 30 Days</option>
+                <option value="90d">Last 90 Days</option>
+              </select>
+              <div className="flex items-center gap-2 text-green-400">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-sm">Live</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation Tabs */}
+      <div className="container mx-auto px-6 py-4">
+        <div className="flex space-x-1 bg-gray-800/50 rounded-xl p-1">
+          {tabs.map((tab) => (
             <button
-              key={range}
-              onClick={() => setTimeRange(range)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                timeRange === range
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-white/10 text-gray-300 hover:bg-white/20'
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                activeTab === tab.id
+                  ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
               }`}
             >
-              {range === '1d' ? '24h' : range === '7d' ? '7 días' : range === '30d' ? '30 días' : '90 días'}
+              <tab.icon className="w-4 h-4" />
+              {tab.label}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Key Metrics */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur border border-green-500/30 rounded-2xl p-6 text-center"
-        >
-          <Users className="w-12 h-12 text-green-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">Total Users</h3>
-          <p className="text-gray-300 text-sm">50,247 active users</p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur border border-blue-500/30 rounded-2xl p-6 text-center"
-        >
-          <DollarSign className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">Revenue</h3>
-          <p className="text-gray-300 text-sm">$2.1M this month</p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur border border-purple-500/30 rounded-2xl p-6 text-center"
-        >
-          <TrendingUp className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">Growth</h3>
-          <p className="text-gray-300 text-sm">+4.9% this month</p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur border border-orange-500/30 rounded-2xl p-6 text-center"
-        >
-          <Star className="w-12 h-12 text-orange-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">Rating</h3>
-          <p className="text-gray-300 text-sm">4.9/5 average</p>
-        </motion.div>
+      {/* Content */}
+      <div className="container mx-auto px-6 pb-8">
+        {activeTab === 'overview' && <OverviewTab data={mockData} />}
+        {activeTab === 'partners' && <PartnersTab />}
+        {activeTab === 'risk' && <RiskTab riskMetrics={riskMetrics} weatherEvents={weatherEvents} />}
+        {activeTab === 'impact' && <ImpactTab sdgImpact={sdgImpact} sdgMetrics={sdgMetrics} />}
+        {activeTab === 'realtime' && <RealtimeTab claims={liveClaims} />}
       </div>
-
-      {/* Charts Grid */}
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-white mb-6">
-          Platform Metrics
-        </h2>
-        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-          Key performance indicators and business metrics
-        </p>
-      </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div className="bg-gradient-to-br from-gray-500/20 to-gray-600/20 backdrop-blur border border-gray-500/30 rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-white mb-6">User Analytics</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">New Users</span>
-              <span className="text-white font-semibold">2,341</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">Active Users</span>
-              <span className="text-green-400 font-semibold">45,892</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">Retention Rate</span>
-              <span className="text-blue-400 font-semibold">87.3%</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">Churn Rate</span>
-              <span className="text-red-400 font-semibold">2.1%</span>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur border border-green-500/30 rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-white mb-6">Financial Metrics</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">Monthly Revenue</span>
-              <span className="text-white font-semibold">$2.1M</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">Claims Paid</span>
-              <span className="text-red-400 font-semibold">$5.2M</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">Profit Margin</span>
-              <span className="text-green-400 font-semibold">23.4%</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">Average Premium</span>
-              <span className="text-blue-400 font-semibold">$8.50</span>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur border border-blue-500/30 rounded-2xl p-8">
-          <h3 className="text-2xl font-bold text-white mb-6">Performance Metrics</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">Response Time</span>
-              <span className="text-white font-semibold">2.1h</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">Claim Approval Rate</span>
-              <span className="text-green-400 font-semibold">97.7%</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">Customer Satisfaction</span>
-              <span className="text-yellow-400 font-semibold">4.9/5</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-300">System Uptime</span>
-              <span className="text-blue-400 font-semibold">99.9%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Product Performance */}
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-white mb-6">
-          Product Performance
-        </h2>
-        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-          How each insurance product is performing
-        </p>
-      </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur border border-green-500/30 rounded-2xl p-6 text-center">
-          <Heart className="w-12 h-12 text-green-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">Micro-Health</h3>
-          <div className="text-3xl font-bold text-white mb-2">25,341</div>
-          <div className="text-gray-300 text-sm">Active policies</div>
-          <div className="text-green-400 text-sm font-semibold mt-2">+12.4%</div>
-        </div>
-        <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur border border-blue-500/30 rounded-2xl p-6 text-center">
-          <CloudRain className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">Micro-Climate</h3>
-          <div className="text-3xl font-bold text-white mb-2">12,847</div>
-          <div className="text-gray-300 text-sm">Active policies</div>
-          <div className="text-green-400 text-sm font-semibold mt-2">+8.7%</div>
-        </div>
-        <div className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur border border-purple-500/30 rounded-2xl p-6 text-center">
-          <Shield className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">Micro-Security</h3>
-          <div className="text-3xl font-bold text-white mb-2">8,923</div>
-          <div className="text-gray-300 text-sm">Active policies</div>
-          <div className="text-green-400 text-sm font-semibold mt-2">+15.2%</div>
-        </div>
-        <div className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 backdrop-blur border border-orange-500/30 rounded-2xl p-6 text-center">
-          <Car className="w-12 h-12 text-orange-400 mx-auto mb-4" />
-          <h3 className="text-xl font-bold text-white mb-2">Micro-Mobility</h3>
-          <div className="text-3xl font-bold text-white mb-2">3,136</div>
-          <div className="text-gray-300 text-sm">Active policies</div>
-          <div className="text-green-400 text-sm font-semibold mt-2">+6.9%</div>
-        </div>
-      </div>
-
-      {/* Geographic Distribution */}
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-white mb-6">
-          Geographic Distribution
-        </h2>
-        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-          User distribution across Mexico
-        </p>
-      </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 backdrop-blur border border-green-500/20 rounded-2xl p-6">
-          <MapPin className="w-12 h-12 text-green-400 mb-4" />
-          <h3 className="text-xl font-bold text-white mb-3">Top States</h3>
-          <p className="text-gray-300 text-sm">
-            Mexico City, Jalisco, Nuevo León, Veracruz, and Puebla lead in user adoption.
-          </p>
-        </div>
-        <div className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 backdrop-blur border border-blue-500/20 rounded-2xl p-6">
-          <TrendingUp className="w-12 h-12 text-blue-400 mb-4" />
-          <h3 className="text-xl font-bold text-white mb-3">Growth Areas</h3>
-          <p className="text-gray-300 text-sm">
-            Strongest growth in rural areas and underserved communities.
-          </p>
-        </div>
-        <div className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 backdrop-blur border border-purple-500/20 rounded-2xl p-6">
-          <Users className="w-12 h-12 text-purple-400 mb-4" />
-          <h3 className="text-xl font-bold text-white mb-3">Market Penetration</h3>
-          <p className="text-gray-300 text-sm">
-            Currently serving 0.4% of Mexico's population with room for significant growth.
-          </p>
-        </div>
-        <div className="bg-gradient-to-br from-orange-500/10 to-orange-600/10 backdrop-blur border border-orange-500/20 rounded-2xl p-6">
-          <Smartphone className="w-12 h-12 text-orange-400 mb-4" />
-          <h3 className="text-xl font-bold text-white mb-3">Digital Adoption</h3>
-          <p className="text-gray-300 text-sm">
-            95% of users access our services through mobile devices.
-          </p>
-        </div>
-      </div>
-
-      {/* Export Analytics */}
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-white mb-6">
-          Export Analytics
-        </h2>
-        <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-          Download comprehensive reports and data for further analysis
-        </p>
-      </div>
-
-      {/* Real-time Alerts */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.1 }}
-        className="mt-8 bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20"
-      >
-        <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-          <Activity className="w-6 h-6" />
-          Alertas en Tiempo Real
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-4">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5 text-red-400" />
-              <span className="text-white font-medium">Fraude Detectado</span>
-            </div>
-            <p className="text-red-300 text-sm mt-1">{data.fraudAttempts} intentos hoy</p>
-          </div>
-          <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-4">
-            <div className="flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-blue-400" />
-              <span className="text-white font-medium">Alertas Climáticas</span>
-            </div>
-            <p className="text-blue-300 text-sm mt-1">{data.weatherAlerts} eventos activos</p>
-          </div>
-          <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4">
-            <div className="flex items-center gap-2">
-              <Clock className="w-5 h-5 text-green-400" />
-              <span className="text-white font-medium">Tiempo Promedio</span>
-            </div>
-            <p className="text-green-300 text-sm mt-1">{data.avgClaimTime} segundos</p>
-          </div>
-        </div>
-      </motion.div>
     </div>
-  )
+  );
+}
+
+// Overview Tab Component
+function OverviewTab({ data }: any) {
+  const stats = [
+    {
+      title: 'Total Policies',
+      value: data.totalPolicies.toLocaleString(),
+      change: '+12.5%',
+      changeType: 'positive',
+      icon: Shield,
+      color: 'from-blue-500 to-blue-600'
+    },
+    {
+      title: 'Active Claims',
+      value: data.activeClaims,
+      change: '-5.2%',
+      changeType: 'negative',
+      icon: AlertTriangle,
+      color: 'from-orange-500 to-orange-600'
+    },
+    {
+      title: 'Total Premiums',
+      value: `$${data.totalPremiums.toLocaleString()}`,
+      change: '+18.7%',
+      changeType: 'positive',
+      icon: DollarSign,
+      color: 'from-green-500 to-green-600'
+    },
+    {
+      title: 'Profit Margin',
+      value: `${data.profitMargin}%`,
+      change: '+3.1%',
+      changeType: 'positive',
+      icon: TrendingUp,
+      color: 'from-purple-500 to-purple-600'
+    }
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Key Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat, index) => (
+          <motion.div
+            key={stat.title}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className={`w-12 h-12 bg-gradient-to-r ${stat.color} rounded-xl flex items-center justify-center`}>
+                <stat.icon className="w-6 h-6 text-white" />
+              </div>
+              <div className={`flex items-center gap-1 text-sm ${
+                stat.changeType === 'positive' ? 'text-green-400' : 'text-red-400'
+              }`}>
+                {stat.changeType === 'positive' ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
+                {stat.change}
+              </div>
+            </div>
+            <h3 className="text-2xl font-bold mb-1">{stat.value}</h3>
+            <p className="text-gray-400 text-sm">{stat.title}</p>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6">
+          <h3 className="text-xl font-bold mb-4">Premium vs Claims</h3>
+          <div className="h-64 flex items-center justify-center text-gray-400">
+            <LineChart className="w-16 h-16" />
+            <span className="ml-2">Chart Component</span>
+          </div>
+        </div>
+
+        <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6">
+          <h3 className="text-xl font-bold mb-4">Policy Distribution</h3>
+          <div className="h-64 flex items-center justify-center text-gray-400">
+            <PieChart className="w-16 h-16" />
+            <span className="ml-2">Chart Component</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6">
+        <h3 className="text-xl font-bold mb-4">Recent Activity</h3>
+        <div className="space-y-4">
+          {[1, 2, 3, 4, 5].map((item) => (
+            <div key={item} className="flex items-center gap-4 p-3 bg-gray-700/30 rounded-lg">
+              <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-5 h-5 text-green-400" />
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium">New policy purchased</p>
+                <p className="text-xs text-gray-400">Micro-Health Premium - $10/month</p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-medium">$10.00</p>
+                <p className="text-xs text-gray-400">2 min ago</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Partners Tab Component
+function PartnersTab() {
+  const partners = [
+    {
+      name: '0x Protocol',
+      bounty: '$4,000',
+      status: 'active',
+      metrics: {
+        gaslessTransactions: 2340,
+        gasSaved: '$5,850',
+        successRate: 99.2
+      },
+      icon: Zap,
+      color: 'from-blue-500 to-blue-600'
+    },
+    {
+      name: 'Reown AppKit',
+      bounty: '$3,000',
+      status: 'active',
+      metrics: {
+        socialLogins: 890,
+        userRetention: 94.5,
+        uiScore: 9.2
+      },
+      icon: Smartphone,
+      color: 'from-purple-500 to-purple-600'
+    },
+    {
+      name: 'Envio Analytics',
+      bounty: '$2,000',
+      status: 'active',
+      metrics: {
+        realtimeEvents: 15420,
+        dataPoints: 2.3,
+        uptime: 99.9
+      },
+      icon: Activity,
+      color: 'from-green-500 to-green-600'
+    },
+    {
+      name: 'Para Wallet',
+      bounty: '$600',
+      status: 'active',
+      metrics: {
+        appClips: 1560,
+        savingsGoals: 890,
+        conversions: 78.5
+      },
+      icon: Award,
+      color: 'from-orange-500 to-orange-600'
+    },
+    {
+      name: 'BGA SDG',
+      bounty: '$2,000 USDT',
+      status: 'active',
+      metrics: {
+        sdgAlignment: 87.3,
+        impactStories: 45,
+        socialScore: 9.1
+      },
+      icon: Globe,
+      color: 'from-teal-500 to-teal-600'
+    }
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-2xl p-6">
+        <h3 className="text-xl font-bold mb-2">Hackathon Bounty Status</h3>
+        <p className="text-gray-400 mb-4">All partner integrations active and tracking for bounty eligibility</p>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 text-green-400">
+            <CheckCircle className="w-5 h-5" />
+            <span className="font-semibold">$11,600 Total Bounties</span>
+          </div>
+          <div className="flex items-center gap-2 text-blue-400">
+            <Clock className="w-4 h-4" />
+            <span>Submission Deadline: Dec 15, 2024</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {partners.map((partner, index) => (
+          <motion.div
+            key={partner.name}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: index * 0.1 }}
+            className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div className={`w-12 h-12 bg-gradient-to-r ${partner.color} rounded-xl flex items-center justify-center`}>
+                <partner.icon className="w-6 h-6 text-white" />
+              </div>
+              <div className="text-right">
+                <div className="text-sm font-semibold text-green-400">{partner.bounty}</div>
+                <div className="text-xs text-gray-400">Bounty</div>
+              </div>
+            </div>
+
+            <h3 className="text-lg font-bold mb-2">{partner.name}</h3>
+            
+            <div className="space-y-3">
+              {Object.entries(partner.metrics).map(([key, value]) => (
+                <div key={key} className="flex justify-between items-center">
+                  <span className="text-sm text-gray-400 capitalize">
+                    {key.replace(/([A-Z])/g, ' $1').trim()}
+                  </span>
+                  <span className="text-sm font-semibold">
+                    {typeof value === 'number' && value > 1000 
+                      ? value.toLocaleString() 
+                      : typeof value === 'number' && value < 1 
+                        ? `${(value * 100).toFixed(1)}%`
+                        : value}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-gray-700">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                <span className="text-sm text-green-400">Active</span>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Integration Performance */}
+      <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6">
+        <h3 className="text-xl font-bold mb-4">Integration Performance</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-green-400 mb-2">99.9%</div>
+            <div className="text-sm text-gray-400">Uptime</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-blue-400 mb-2">2.3s</div>
+            <div className="text-sm text-gray-400">Avg Response Time</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-purple-400 mb-2">15.4K</div>
+            <div className="text-sm text-gray-400">Daily Transactions</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Risk Tab Component
+function RiskTab({ riskMetrics, weatherEvents }: any) {
+  return (
+    <div className="space-y-6">
+      {/* Risk Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {riskMetrics?.map((metric: any, index: number) => (
+          <motion.div
+            key={metric.poolId}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6"
+          >
+            <h3 className="text-lg font-bold mb-2">Pool {metric.poolId}</h3>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-400">Total Value</span>
+                <span className="text-sm font-semibold">${metric.totalValue?.toLocaleString()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-400">Active Policies</span>
+                <span className="text-sm font-semibold">{metric.activePolicies}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-gray-400">Loss Ratio</span>
+                <span className={`text-sm font-semibold ${
+                  metric.lossRatio > 80 ? 'text-red-400' : 'text-green-400'
+                }`}>
+                  {metric.lossRatio?.toFixed(1)}%
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Weather Events */}
+      <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6">
+        <h3 className="text-xl font-bold mb-4">Weather Events</h3>
+        <div className="space-y-4">
+          {weatherEvents?.slice(0, 5).map((event: any, index: number) => (
+            <div key={index} className="flex items-center justify-between p-4 bg-gray-700/30 rounded-lg">
+              <div className="flex items-center gap-4">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  event.severity === 'high' ? 'bg-red-500/20' : 
+                  event.severity === 'medium' ? 'bg-orange-500/20' : 'bg-yellow-500/20'
+                }`}>
+                  <AlertTriangle className={`w-5 h-5 ${
+                    event.severity === 'high' ? 'text-red-400' : 
+                    event.severity === 'medium' ? 'text-orange-400' : 'text-yellow-400'
+                  }`} />
+                </div>
+                <div>
+                  <p className="font-semibold capitalize">{event.severity} Weather Event</p>
+                  <p className="text-sm text-gray-400">
+                    {event.affectedPolicies} policies affected
+                  </p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="font-semibold">${event.estimatedLoss?.toLocaleString()}</p>
+                <p className="text-sm text-gray-400">
+                  {new Date(event.timestamp).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Impact Tab Component
+function ImpactTab({ sdgImpact, sdgMetrics }: any) {
+  return (
+    <div className="space-y-6">
+      {/* SDG Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 text-center">
+          <div className="text-3xl font-bold text-green-400 mb-2">
+            {sdgImpact?.familiesProtected?.toLocaleString() || '15K'}
+          </div>
+          <div className="text-sm text-gray-400">Families Protected</div>
+        </div>
+        <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 text-center">
+          <div className="text-3xl font-bold text-blue-400 mb-2">
+            {sdgImpact?.unbankedServed?.toLocaleString() || '12K'}
+          </div>
+          <div className="text-sm text-gray-400">Unbanked Served</div>
+        </div>
+        <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 text-center">
+          <div className="text-3xl font-bold text-purple-400 mb-2">
+            {sdgImpact?.farmersProtected?.toLocaleString() || '4.5K'}
+          </div>
+          <div className="text-sm text-gray-400">Farmers Protected</div>
+        </div>
+        <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 text-center">
+          <div className="text-3xl font-bold text-teal-400 mb-2">
+            {sdgMetrics?.sdg1?.financialResilience?.toFixed(1) || '85.5'}%
+          </div>
+          <div className="text-sm text-gray-400">Financial Resilience</div>
+        </div>
+      </div>
+
+      {/* SDG Progress */}
+      <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6">
+        <h3 className="text-xl font-bold mb-4">SDG Alignment Progress</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {sdgMetrics && Object.entries(sdgMetrics).map(([sdg, metrics]: [string, any]) => (
+            <div key={sdg} className="space-y-3">
+              <div className="flex justify-between items-center">
+                <h4 className="font-semibold">SDG {sdg.replace('sdg', '')}</h4>
+                <span className="text-sm text-gray-400">
+                  {metrics.financialResilience || metrics.healthOutcomes || metrics.economicInclusion || metrics.climateResilience}%
+                </span>
+              </div>
+              <div className="w-full bg-gray-700 rounded-full h-2">
+                <div 
+                  className="bg-gradient-to-r from-green-500 to-emerald-600 h-2 rounded-full transition-all"
+                  style={{ 
+                    width: `${metrics.financialResilience || metrics.healthOutcomes || metrics.economicInclusion || metrics.climateResilience}%` 
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Realtime Tab Component
+function RealtimeTab({ claims }: any) {
+  return (
+    <div className="space-y-6">
+      {/* Live Claims Feed */}
+      <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6">
+        <h3 className="text-xl font-bold mb-4">Live Claims Activity</h3>
+        <div className="space-y-4">
+          {claims?.map((claim: any, index: number) => (
+            <motion.div
+              key={claim.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="flex items-center justify-between p-4 bg-gray-700/30 rounded-lg"
+            >
+              <div className="flex items-center gap-4">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  claim.status === 'approved' ? 'bg-green-500/20' : 
+                  claim.status === 'pending' ? 'bg-yellow-500/20' : 'bg-red-500/20'
+                }`}>
+                  {claim.status === 'approved' ? (
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                  ) : claim.status === 'pending' ? (
+                    <Clock className="w-5 h-5 text-yellow-400" />
+                  ) : (
+                    <XCircle className="w-5 h-5 text-red-400" />
+                  )}
+                </div>
+                <div>
+                  <p className="font-semibold capitalize">{claim.type} Claim</p>
+                  <p className="text-sm text-gray-400">Policy #{claim.policyId}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="font-semibold">${claim.amount?.toLocaleString()}</p>
+                <p className="text-sm text-gray-400 capitalize">{claim.status}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* System Status */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 text-center">
+          <div className="text-3xl font-bold text-green-400 mb-2">99.9%</div>
+          <div className="text-sm text-gray-400">System Uptime</div>
+        </div>
+        <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 text-center">
+          <div className="text-3xl font-bold text-blue-400 mb-2">1.2s</div>
+          <div className="text-sm text-gray-400">Avg Response Time</div>
+        </div>
+        <div className="bg-gray-800/50 backdrop-blur border border-gray-700 rounded-2xl p-6 text-center">
+          <div className="text-3xl font-bold text-purple-400 mb-2">2.3K</div>
+          <div className="text-sm text-gray-400">Active Sessions</div>
+        </div>
+      </div>
+    </div>
+  );
 }

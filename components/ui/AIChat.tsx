@@ -25,7 +25,7 @@ interface Message {
 const initialMessages: Message[] = [
   {
     id: '1',
-    content: 'Hello! I\'m your MicroInsurance AI assistant. How can I help you today? I can help you with:\n\n• Insurance quotes and coverage\n• Product information\n• Claims assistance\n• General questions about our services',
+          content: 'Hello! I\'m your PakalFi AI assistant. How can I help you today? I can help you with:\n\n• Insurance quotes and coverage\n• Product information\n• Claims assistance\n• General questions about our services',
     sender: 'ai',
     timestamp: new Date()
   }
@@ -215,12 +215,28 @@ export function AIChat() {
                          animate={{ opacity: 1, y: 0 }}
                          className="flex justify-start"
                        >
-                         <div className="bg-gray-800 text-gray-100 p-2 rounded-xl">
-                           <div className="flex items-center space-x-2">
-                             <Bot className="w-4 h-4 text-green-400" />
-                             <div className="flex items-center space-x-1">
-                               <Loader2 className="w-4 h-4 animate-spin" />
-                               <span className="text-xs">AI is typing...</span>
+                         <div className="bg-gray-800 text-gray-100 p-3 rounded-xl">
+                           <div className="flex items-center space-x-3">
+                             <Bot className="w-5 h-5 text-green-400" />
+                             <div className="flex items-center space-x-2">
+                               <div className="flex space-x-1">
+                                 <motion.div
+                                   className="w-2 h-2 bg-green-400 rounded-full"
+                                   animate={{ scale: [1, 1.5, 1] }}
+                                   transition={{ duration: 0.6, repeat: Infinity, delay: 0 }}
+                                 />
+                                 <motion.div
+                                   className="w-2 h-2 bg-green-400 rounded-full"
+                                   animate={{ scale: [1, 1.5, 1] }}
+                                   transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
+                                 />
+                                 <motion.div
+                                   className="w-2 h-2 bg-green-400 rounded-full"
+                                   animate={{ scale: [1, 1.5, 1] }}
+                                   transition={{ duration: 0.6, repeat: Infinity, delay: 0.4 }}
+                                 />
+                               </div>
+                               <span className="text-xs text-gray-300">AI está escribiendo...</span>
                              </div>
                            </div>
                          </div>

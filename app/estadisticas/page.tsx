@@ -56,18 +56,18 @@ export default function EstadisticasPage() {
   ]
 
   const topProducts = [
-    { name: 'Micro-Health', users: 5432, growth: '+18%', color: 'bg-green-500' },
-    { name: 'Micro-Climate', users: 3210, growth: '+12%', color: 'bg-blue-500' },
-    { name: 'Micro-Security', users: 2876, growth: '+9%', color: 'bg-purple-500' },
-    { name: 'Micro-Mobility', users: 1914, growth: '+15%', color: 'bg-orange-500' }
+            { name: 'Pakal-Health', users: 5432, growth: '+18%', color: 'bg-green-500' },
+        { name: 'Pakal-Climate', users: 3210, growth: '+12%', color: 'bg-blue-500' },
+        { name: 'Pakal-Security', users: 2876, growth: '+9%', color: 'bg-purple-500' },
+        { name: 'Pakal-Mobility', users: 1914, growth: '+15%', color: 'bg-orange-500' }
   ]
 
   const recentActivity = [
-    { user: 'María G.', action: 'Contracted Micro-Health', time: '2 min', amount: '$45' },
-    { user: 'Carlos R.', action: 'Renewed Micro-Climate', time: '5 min', amount: '$32' },
+    { user: 'María G.', action: 'Contracted Pakal-Health', time: '2 min', amount: '$45' },
+    { user: 'Carlos R.', action: 'Renewed Pakal-Climate', time: '5 min', amount: '$32' },
     { user: 'Ana L.', action: 'Claim paid', time: '12 min', amount: '$180' },
-    { user: 'Luis M.', action: 'Contracted Micro-Security', time: '18 min', amount: '$28' },
-    { user: 'Sofia P.', action: 'Renewed Micro-Mobility', time: '25 min', amount: '$35' }
+    { user: 'Luis M.', action: 'Contracted Pakal-Security', time: '18 min', amount: '$28' },
+    { user: 'Sofia P.', action: 'Renewed Pakal-Mobility', time: '25 min', amount: '$35' }
   ]
 
   return (

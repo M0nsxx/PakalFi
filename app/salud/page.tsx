@@ -25,9 +25,11 @@ import {
   Award,
   Stethoscope,
   Pill,
-  Smartphone
+  Smartphone,
+  Globe
 } from 'lucide-react'
 import { WalletButton } from '@/components/ui/WalletButton'
+import { getContracts } from '@/config/contracts'
 
 const benefits = [
   {
@@ -56,7 +58,7 @@ const coverageOptions = [
   {
     name: 'Basic',
     price: 2,
-    coverage: '5,000 MXN',
+    coverage: '5,000 USD',
     features: [
       'Accident hospitalization',
       'Emergency medical consultation',
@@ -67,7 +69,7 @@ const coverageOptions = [
   {
     name: 'Standard',
     price: 5,
-    coverage: '15,000 MXN',
+    coverage: '15,000 USD',
     features: [
       'Everything from Basic plan',
       'Outpatient surgery',
@@ -79,7 +81,7 @@ const coverageOptions = [
   {
     name: 'Premium',
     price: 10,
-    coverage: '35,000 MXN',
+    coverage: '35,000 USD',
     features: [
       'Everything from Standard plan',
       'Major surgery',
@@ -119,10 +121,38 @@ export default function HealthPage() {
   const [selectedPlan, setSelectedPlan] = useState(0)
   const [isCalculating, setIsCalculating] = useState(false)
 
-  const handleCalculate = () => {
+  const handleCalculate = async () => {
     setIsCalculating(true)
-    // Simular cálculo
-    setTimeout(() => setIsCalculating(false), 2000)
+    try {
+      // Get deployed contracts
+      const contracts = getContracts(10143) // Monad testnet
+      
+      if (contracts?.insurancePool) {
+        const response = await fetch('/api/premium/calculate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            age: 30,
+            location: 'CDMX',
+            insuranceType: 'health',
+            coverage: 25000,
+            duration: 12,
+            occupation: 'employee',
+            insurancePool: contracts.insurancePool,
+            oracle: contracts.oracle
+          })
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          console.log('Premium calculated:', data.premium)
+        }
+      }
+    } catch (error) {
+      console.error('Error calculating premium:', error)
+    } finally {
+      setIsCalculating(false)
+    }
   }
 
   return (
@@ -143,7 +173,7 @@ export default function HealthPage() {
                 Micro-Health
               </h1>
               <p className="text-xl text-gray-300 text-center max-w-3xl mx-auto mb-8">
-                Affordable health coverage for Mexican families. From $2 USD per month, 
+                Affordable health coverage for families globally. From $2 USD per month, 
                 get comprehensive protection for you and your loved ones.
               </p>
             </div>
@@ -221,8 +251,81 @@ export default function HealthPage() {
         </div>
       </section>
 
-      {/* Coverage Plans */}
+      {/* Global Coverage Section */}
       <section className="py-20">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Global Coverage
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Available in 15+ countries across Latin America, Africa, and Southeast Asia
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-green-500/20 to-green-600/20 backdrop-blur border border-green-500/30 rounded-2xl p-8 text-center"
+            >
+              <Globe className="w-16 h-16 text-green-400 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">Latin America</h3>
+              <p className="text-gray-300 mb-6">Mexico, Brazil, Colombia, Argentina, Peru</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <div>• Regulatory sandbox programs</div>
+                <div>• High crypto adoption</div>
+                <div>• Mobile payment integration</div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 backdrop-blur border border-blue-500/30 rounded-2xl p-8 text-center"
+            >
+              <Award className="w-16 h-16 text-blue-400 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">Africa</h3>
+              <p className="text-gray-300 mb-6">Nigeria, Kenya, South Africa, Ghana, Egypt</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <div>• Mobile money integration</div>
+                <div>• M-Pesa ecosystem</div>
+                <div>• Progressive regulation</div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 backdrop-blur border border-purple-500/30 rounded-2xl p-8 text-center"
+            >
+              <TrendingUp className="w-16 h-16 text-purple-400 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-white mb-4">Southeast Asia</h3>
+              <p className="text-gray-300 mb-6">Indonesia, Philippines, Vietnam, India, Bangladesh</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <div>• High remittance flows</div>
+                <div>• Digital payment adoption</div>
+                <div>• Established microfinance</div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Coverage Plans */}
+      <section className="py-20 bg-gray-900/50">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -290,7 +393,7 @@ export default function HealthPage() {
       </section>
 
       {/* Calculator Section */}
-      <section className="py-20 bg-gray-900/50">
+      <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <motion.div
@@ -377,7 +480,7 @@ export default function HealthPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-300">Coverage:</span>
-                      <span className="text-white font-semibold">15,000 MXN</span>
+                      <span className="text-white font-semibold">15,000 USD</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-300">Deductible:</span>
@@ -397,7 +500,7 @@ export default function HealthPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20">
+      <section className="py-20 bg-gray-900/50">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -410,7 +513,7 @@ export default function HealthPage() {
               What our customers say
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Over 10,000 families trust Micro-Health
+              Over 10,000 families trust Micro-Health globally
             </p>
           </motion.div>
 

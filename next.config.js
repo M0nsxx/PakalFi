@@ -5,7 +5,7 @@ const withPWA = require('next-pwa')({
   disable: process.env.NODE_ENV === 'development',
   runtimeCaching: [
     {
-      urlPattern: /^https:\/\/api\.microseguro\.mx/,
+              urlPattern: /^https:\/\/api\.pakalfi\.mx/,
       handler: 'NetworkFirst',
       options: {
         cacheName: 'api-cache',

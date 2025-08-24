@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, X, Send, Phone, Mail, Clock } from 'lucide-react'
+import { getContracts } from '@/config/contracts'
 
 export function WhatsAppWidget() {
   const [isMounted, setIsMounted] = useState(false)
@@ -15,7 +16,7 @@ export function WhatsAppWidget() {
   }>>([
     {
       id: '1',
-      text: 'Hello! I\'m your MicroInsurance assistant. How can I help you today?',
+              text: 'Hello! I\'m your PakalFi assistant. How can I help you today?',
       sender: 'bot',
       timestamp: new Date()
     }
@@ -51,8 +52,8 @@ export function WhatsAppWidget() {
     setIsTyping(true)
     
     // Simulate bot response
-    setTimeout(() => {
-      const botResponse = generateBotResponse(message)
+    setTimeout(async () => {
+      const botResponse = await generateBotResponse(message)
       const botMessage = {
         id: (Date.now() + 1).toString(),
         text: botResponse,
@@ -65,35 +66,55 @@ export function WhatsAppWidget() {
     }, 1500)
   }
   
-  const generateBotResponse = (message: string): string => {
+  const generateBotResponse = async (message: string): Promise<string> => {
     const lowerMessage = message.toLowerCase()
     
-    if (lowerMessage.includes('quote') || lowerMessage.includes('price')) {
-      return 'Perfect! To get your insurance quote I need some information:\n\n1️⃣ What type of insurance are you interested in? (Health, Climate, Security, Mobility)\n2️⃣ What is your age?\n3️⃣ What city do you live in?\n\nAnswer these questions and I\'ll give you a personalized quote.'
+    try {
+      // Get deployed contracts for real data
+      const contracts = getContracts(10143) // Monad testnet
+      
+      if (lowerMessage.includes('quote') || lowerMessage.includes('price')) {
+        if (contracts?.insurancePool) {
+          return 'Perfect! I\'m connected to our smart contracts on Monad testnet. To get your insurance quote I need some information:\n\n1️⃣ What type of insurance are you interested in? (Health, Climate, Security, Mobility)\n2️⃣ What is your age?\n3️⃣ What city do you live in?\n\nI\'ll calculate your premium using our real-time oracle data and smart contracts.'
+        }
+        return 'Perfect! To get your insurance quote I need some information:\n\n1️⃣ What type of insurance are you interested in? (Health, Climate, Security, Mobility)\n2️⃣ What is your age?\n3️⃣ What city do you live in?\n\nAnswer these questions and I\'ll give you a personalized quote.'
+      }
+      
+      if (lowerMessage.includes('policy') || lowerMessage.includes('policies')) {
+        if (contracts?.policyNFT) {
+          return 'To view your policies, I need to verify your identity. Your policies are stored as NFTs on the blockchain. Please send your registered phone number or policy number. Contract: ' + contracts.policyNFT.substring(0, 10) + '...'
+        }
+        return 'To view your policies, I need to verify your identity. Please send your registered phone number or policy number.'
+      }
+      
+      if (lowerMessage.includes('claim') || lowerMessage.includes('incident')) {
+        if (contracts?.oracle) {
+          return 'I understand you need to file a claim. Our oracle contract will automatically verify your claim using real-world data. Let me help you process it:\n\n1️⃣ What type of incident occurred?\n2️⃣ When did it happen?\n3️⃣ Do you have any documents or photos?\n\nOracle contract: ' + contracts.oracle.substring(0, 10) + '...'
+        }
+        return 'I understand you need to file a claim. Let me help you process it:\n\n1️⃣ What type of incident occurred?\n2️⃣ When did it happen?\n3️⃣ Do you have any documents or photos?\n\nOnce I have this information, I\'ll process your claim automatically.'
+      }
+      
+      if (lowerMessage.includes('payment') || lowerMessage.includes('pay')) {
+        if (contracts?.gaslessPaymentHandler) {
+          return 'You have several options to pay your premium:\n\n💳 Credit/debit card\n🏪 OXXO (barcode)\n📱 SPEI\n💰 Cash at branch\n🔗 Gasless payments (no gas fees)\n\nOur gasless payment system is live at: ' + contracts.gaslessPaymentHandler.substring(0, 10) + '...'
+        }
+        return 'You have several options to pay your premium:\n\n💳 Credit/debit card\n🏪 OXXO (barcode)\n📱 SPEI\n💰 Cash at branch\n\nWhich do you prefer? I\'ll send you the details.'
+      }
+      
+      if (lowerMessage.includes('agent') || lowerMessage.includes('human')) {
+        return 'I\'ll connect you with a specialized agent. You\'ll receive a call from our team in less than 2 minutes. Is that okay?'
+      }
+      
+      return 'Thank you for your message. Can I help you with any of these options?\n\n• Get insurance quote\n• View your policies\n• File a claim\n• Payment information\n• Contact agent'
+    } catch (error) {
+      console.error('Error generating bot response:', error)
+      return 'Thank you for your message. Can I help you with any of these options?\n\n• Get insurance quote\n• View your policies\n• File a claim\n• Payment information\n• Contact agent'
     }
-    
-    if (lowerMessage.includes('policy') || lowerMessage.includes('policies')) {
-      return 'To view your policies, I need to verify your identity. Please send your registered phone number or policy number.'
-    }
-    
-    if (lowerMessage.includes('claim') || lowerMessage.includes('incident')) {
-      return 'I understand you need to file a claim. Let me help you process it:\n\n1️⃣ What type of incident occurred?\n2️⃣ When did it happen?\n3️⃣ Do you have any documents or photos?\n\nOnce I have this information, I\'ll process your claim automatically.'
-    }
-    
-    if (lowerMessage.includes('payment') || lowerMessage.includes('pay')) {
-      return 'You have several options to pay your premium:\n\n💳 Credit/debit card\n🏪 OXXO (barcode)\n📱 SPEI\n💰 Cash at branch\n\nWhich do you prefer? I\'ll send you the details.'
-    }
-    
-    if (lowerMessage.includes('agent') || lowerMessage.includes('human')) {
-      return 'I\'ll connect you with a specialized agent. You\'ll receive a call from our team in less than 2 minutes. Is that okay?'
-    }
-    
-    return 'Thank you for your message. Can I help you with any of these options?\n\n• Get insurance quote\n• View your policies\n• File a claim\n• Payment information\n• Contact agent'
   }
   
   const openWhatsApp = () => {
     const phoneNumber = '525512345678'
-    const message = encodeURIComponent('Hello, I\'m interested in getting an insurance quote with MicroInsurance')
+    const message = encodeURIComponent('Hello, I\'m interested in getting an insurance quote with PakalFi')
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank')
   }
   
@@ -126,7 +147,7 @@ export function WhatsAppWidget() {
                   <MessageCircle className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-bold">MicroInsurance</h3>
+                  <h3 className="font-bold">PakalFi</h3>
                   <p className="text-sm opacity-90">Virtual assistant</p>
                 </div>
               </div>
@@ -240,7 +261,7 @@ export function WhatsAppWidget() {
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Mail className="w-4 h-4 text-green-500" />
-                <span>hello@microinsurance.mx</span>
+                <span>hello@pakalfi.mx</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <Clock className="w-4 h-4 text-green-500" />

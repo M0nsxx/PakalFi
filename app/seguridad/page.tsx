@@ -142,7 +142,7 @@ export default function SeguridadPage() {
             <div className="flex items-center justify-center space-x-2 mb-6">
               <Shield className="w-8 h-8 text-red-400" />
               <h1 className="text-4xl md:text-6xl font-bold text-white text-center mb-6">
-                Micro-Security
+                Pakal-Security
               </h1>
               <p className="text-xl text-gray-300 text-center max-w-3xl mx-auto mb-8">
                 Protect your personal belongings and property from theft, damage, and accidents. 
@@ -544,7 +544,7 @@ export default function SeguridadPage() {
               Ready to protect yourself?
             </h2>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join thousands of families who already trust Micro-Security for their protection
+              Join thousands of families who already trust Pakal-Security for their protection
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <WalletButton className="bg-gradient-to-r from-red-500 to-orange-600 text-white px-8 py-4 rounded-full font-semibold hover:shadow-lg hover:shadow-red-500/25 transition-all" />

@@ -2,43 +2,80 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Users, Heart, Shield, TrendingUp, MapPin, Star } from 'lucide-react'
+import { Users, TrendingUp, Globe, Shield, Heart, Zap, Star } from 'lucide-react'
+import { getContracts } from '@/config/contracts'
+
+interface CommunityMetric {
+  id: string
+  name: string
+  value: number
+  change: number
+  icon: React.ReactNode
+  color: string
+}
 
 export function CommunityStats() {
-  const [isMounted, setIsMounted] = useState(false)
-  const [stats, setStats] = useState({
-    totalUsers: 0,
-    activePolicies: 0,
-    totalClaims: 0,
-    satisfactionRate: 0,
-    citiesCovered: 0,
-    averageRating: 0
-  })
-  
+  const [metrics, setMetrics] = useState<CommunityMetric[]>([])
+  const [loading, setLoading] = useState(true)
+  const [contracts, setContracts] = useState<any>(null)
+
   useEffect(() => {
-    setIsMounted(true)
+    // Get deployed contracts
+    const deployedContracts = getContracts(10143) // Monad testnet
+    setContracts(deployedContracts)
     
-    // Animate stats
-    const interval = setInterval(() => {
-      setStats(prev => ({
-        totalUsers: prev.totalUsers < 50000 ? prev.totalUsers + 500 : prev.totalUsers,
-        activePolicies: prev.activePolicies < 75000 ? prev.activePolicies + 750 : prev.activePolicies,
-        totalClaims: prev.totalClaims < 15000 ? prev.totalClaims + 150 : prev.totalClaims,
-        satisfactionRate: prev.satisfactionRate < 98 ? prev.satisfactionRate + 1 : prev.satisfactionRate,
-        citiesCovered: prev.citiesCovered < 150 ? prev.citiesCovered + 1 : prev.citiesCovered,
-        averageRating: prev.averageRating < 4.8 ? prev.averageRating + 0.01 : prev.averageRating
-      }))
-    }, 50)
-    
-    return () => clearInterval(interval)
+    // Fetch community stats
+    fetchCommunityStats()
   }, [])
-  
+
+  const fetchCommunityStats = async () => {
+    try {
+      setLoading(true)
+      
+      // Fetch community stats from contracts
+      if (contracts) {
+        const response = await fetch('/api/community/stats', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            insurancePool: contracts.insurancePool,
+            policyNFT: contracts.policyNFT,
+            reinsuranceToken: contracts.reinsuranceToken,
+            gaslessPaymentHandler: contracts.gaslessPaymentHandler,
+            savingsGoalHandler: contracts.savingsGoalHandler
+          })
+        })
+
+        if (response.ok) {
+          const data = await response.json()
+          setMetrics(data.metrics || [])
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching community stats:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getChangeColor = (change: number) => {
+    if (change > 0) return 'text-green-400'
+    if (change < 0) return 'text-red-400'
+    return 'text-gray-400'
+  }
+
+  const getChangeIcon = (change: number) => {
+    if (change > 0) return <TrendingUp className="w-4 h-4" />
+    if (change < 0) return <TrendingUp className="w-4 h-4 transform rotate-180" />
+    return <TrendingUp className="w-4 h-4 opacity-50" />
+  }
+
   const testimonials = [
     {
       name: 'María González',
       location: 'CDMX',
       rating: 5,
-      text: 'MicroInsurance me salvó cuando tuve un accidente. El pago llegó en segundos, sin papeleos.',
+              text: 'PakalFi me salvó cuando tuve un accidente. El pago llegó en segundos, sin papeleos.',
       avatar: '👩‍💼'
     },
     {
@@ -78,7 +115,7 @@ export function CommunityStats() {
         >
           <Users className="w-12 h-12 text-blue-400 mx-auto mb-4" />
           <div className="text-3xl font-bold text-white mb-2" suppressHydrationWarning>
-            {isMounted ? `${stats.totalUsers.toLocaleString()}+` : '0+'}
+            {loading ? 'Cargando...' : `${metrics.find(m => m.id === 'totalUsers')?.value.toLocaleString()}+`}
           </div>
           <div className="text-gray-300">Usuarios Registrados</div>
         </motion.div>
@@ -91,7 +128,7 @@ export function CommunityStats() {
         >
           <Shield className="w-12 h-12 text-green-400 mx-auto mb-4" />
           <div className="text-3xl font-bold text-white mb-2" suppressHydrationWarning>
-            {isMounted ? `${stats.activePolicies.toLocaleString()}+` : '0+'}
+            {loading ? 'Cargando...' : `${metrics.find(m => m.id === 'activePolicies')?.value.toLocaleString()}+`}
           </div>
           <div className="text-gray-300">Policys Activas</div>
         </motion.div>
@@ -104,7 +141,7 @@ export function CommunityStats() {
         >
           <TrendingUp className="w-12 h-12 text-purple-400 mx-auto mb-4" />
           <div className="text-3xl font-bold text-white mb-2" suppressHydrationWarning>
-            {isMounted ? `${stats.totalClaims.toLocaleString()}+` : '0+'}
+            {loading ? 'Cargando...' : `${metrics.find(m => m.id === 'totalClaims')?.value.toLocaleString()}+`}
           </div>
           <div className="text-gray-300">Processed Claims</div>
         </motion.div>
@@ -117,7 +154,7 @@ export function CommunityStats() {
         >
           <Heart className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
           <div className="text-3xl font-bold text-white mb-2" suppressHydrationWarning>
-            {isMounted ? `${stats.satisfactionRate}%` : '0%'}
+            {loading ? 'Cargando...' : `${metrics.find(m => m.id === 'satisfactionRate')?.value}%`}
           </div>
           <div className="text-gray-300">Satisfaction</div>
         </motion.div>
@@ -128,9 +165,9 @@ export function CommunityStats() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="bg-gradient-to-br from-red-500/20 to-red-600/20 backdrop-blur border border-red-500/30 rounded-2xl p-6 text-center"
         >
-          <MapPin className="w-12 h-12 text-red-400 mx-auto mb-4" />
+          <Globe className="w-12 h-12 text-red-400 mx-auto mb-4" />
           <div className="text-3xl font-bold text-white mb-2" suppressHydrationWarning>
-            {isMounted ? `${stats.citiesCovered}+` : '0+'}
+            {loading ? 'Cargando...' : `${metrics.find(m => m.id === 'citiesCovered')?.value}+`}
           </div>
           <div className="text-gray-300">Ciudades Cubiertas</div>
         </motion.div>
@@ -141,9 +178,9 @@ export function CommunityStats() {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="bg-gradient-to-br from-pink-500/20 to-pink-600/20 backdrop-blur border border-pink-500/30 rounded-2xl p-6 text-center"
         >
-          <Star className="w-12 h-12 text-pink-400 mx-auto mb-4" />
+          <Zap className="w-12 h-12 text-pink-400 mx-auto mb-4" />
           <div className="text-3xl font-bold text-white mb-2" suppressHydrationWarning>
-            {isMounted ? stats.averageRating.toFixed(1) : '0.0'}
+            {loading ? 'Cargando...' : `${metrics.find(m => m.id === 'averageRating')?.value.toFixed(1)}`}
           </div>
           <div className="text-gray-300">Average Rating</div>
         </motion.div>
@@ -206,7 +243,7 @@ export function CommunityStats() {
             >
               <div className="text-white font-medium text-sm">{city}</div>
               <div className="text-green-400 text-xs" suppressHydrationWarning>
-                {isMounted ? `${Math.floor(Math.random() * 1000) + 100} familias` : '0 familias'}
+                {loading ? 'Cargando...' : `${Math.floor(Math.random() * 1000) + 100} familias`}
               </div>
             </motion.div>
           ))}

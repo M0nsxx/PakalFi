@@ -24,12 +24,12 @@
 //       balance: false
 //     })
 
-//     // Test 1: Conexión
+//     // Test 1: Connection
 //     if (wallet.isConnected) {
 //       setTestResults(prev => ({ ...prev, connection: true }))
 //     }
 
-//     // Test 2: Cadena correcta
+//     // Test 2: Correct chain
 //     if (wallet.isCorrectChain) {
 //       setTestResults(prev => ({ ...prev, chain: true }))
 //     }
@@ -60,38 +60,38 @@
 //   return (
 //     <div className="max-w-2xl mx-auto p-8">
 //       <div className="text-center mb-8">
-//         <h2 className="text-3xl font-bold text-white mb-4">Prueba de Wallet</h2>
+//         <h2 className="text-3xl font-bold text-white mb-4">Wallet Test</h2>
 //         <p className="text-gray-300">
-//           Verifica que tu wallet esté funcionando correctamente con MicroInsurance
+//           Verify that your wallet is working correctly with MicroInsurance
 //         </p>
 //       </div>
 
 //       <div className="space-y-6">
 //         {/* Test Results */}
 //         <div className="bg-white/10 backdrop-blur rounded-2xl p-6">
-//           <h3 className="text-xl font-bold text-white mb-4">Results de Pruebas</h3>
+//           <h3 className="text-xl font-bold text-white mb-4">Test Results</h3>
 //           <div className="space-y-3">
 //             <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
 //               <div className="flex items-center gap-3">
 //                 {getTestIcon('connection')}
-//                 <span className="text-white">Conexión de Wallet</span>
+//                 <span className="text-white">Wallet Connection</span>
 //               </div>
 //               <span className={`text-sm font-medium ${
 //                 getTestStatus('connection') === 'success' ? 'text-green-400' : 'text-red-400'
 //               }`}>
-//                 {getTestStatus('connection') === 'success' ? 'Conectado' : 'No conectado'}
+//                 {getTestStatus('connection') === 'success' ? 'Connected' : 'Not connected'}
 //               </span>
 //             </div>
 
 //             <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
 //               <div className="flex items-center gap-3">
 //                 {getTestIcon('chain')}
-//                 <span className="text-white">Red Correcta</span>
+//                 <span className="text-white">Correct Network</span>
 //               </div>
 //               <span className={`text-sm font-medium ${
 //                 getTestStatus('chain') === 'success' ? 'text-green-400' : 'text-red-400'
 //               }`}>
-//                 {getTestStatus('chain') === 'success' ? 'Monad Testnet' : 'Red incorrecta'}
+//                 {getTestStatus('chain') === 'success' ? 'Monad Testnet' : 'Wrong network'}
 //               </span>
 //             </div>
 
@@ -120,7 +120,7 @@
 //               className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-full font-bold hover:shadow-lg hover:shadow-green-500/25 transition-all disabled:opacity-50"
 //             >
 //               <Wallet className="w-5 h-5 mr-2" />
-//               Conectar Wallet
+//               Connect Wallet
 //             </motion.button>
 //           ) : (
 //             <>
@@ -131,7 +131,7 @@
 //                 className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-600 text-white px-6 py-3 rounded-full font-bold hover:shadow-lg hover:shadow-blue-500/25 transition-all"
 //               >
 //                 <RefreshCw className="w-5 h-5 mr-2" />
-//                 Ejecutar Pruebas
+//                 Run Tests
 //               </motion.button>
 
 //               {!wallet.isCorrectChain && (
@@ -142,7 +142,7 @@
 //                   disabled={isLoading}
 //                   className="flex-1 bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-3 rounded-full font-bold hover:shadow-lg hover:shadow-orange-500/25 transition-all disabled:opacity-50"
 //                 >
-//                   Cambiar a Monad Testnet
+//                   Switch to Monad Testnet
 //                 </motion.button>
 //               )}
 
@@ -152,7 +152,7 @@
 //                 onClick={disconnect}
 //                 className="flex-1 bg-gradient-to-r from-red-500 to-pink-600 text-white px-6 py-3 rounded-full font-bold hover:shadow-lg hover:shadow-red-500/25 transition-all"
 //               >
-//                 Desconectar
+//                 Disconnect
 //               </motion.button>
 //             </>
 //           )}
@@ -169,18 +169,18 @@
 //   )
 // }
 
-// Componente temporal para evitar errores de construcción
+// Temporary component to avoid build errors
 export function WalletTest() {
   return (
     <div className="max-w-2xl mx-auto p-8">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-white mb-4">Prueba de Wallet</h2>
+        <h2 className="text-3xl font-bold text-white mb-4">Wallet Test</h2>
         <p className="text-gray-300">
-          Verifica que tu wallet esté funcionando correctamente con MicroInsurance
+          Verify that your wallet is working correctly with MicroInsurance
         </p>
       </div>
       <div className="bg-white/10 backdrop-blur rounded-2xl p-6">
-        <p className="text-white text-center">Funcionalidad temporalmente deshabilitada</p>
+        <p className="text-white text-center">Functionality temporarily disabled</p>
       </div>
     </div>
   )

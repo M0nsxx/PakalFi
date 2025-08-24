@@ -16,9 +16,9 @@ NEXT_PUBLIC_MONAD_TESTNET_EXPLORER=https://explorer.monad-testnet.com
 NEXT_PUBLIC_MONAD_CHAIN_ID=10143
 
 # App Configuration
-NEXT_PUBLIC_APP_NAME=MicroSeguro
+NEXT_PUBLIC_APP_NAME=PakalFi
 NEXT_PUBLIC_APP_DESCRIPTION=Plataforma de micro-seguros descentralizada
-NEXT_PUBLIC_APP_URL=https://microseguro.mx
+NEXT_PUBLIC_APP_URL=https://pakalfi.mx
 ```
 
 ### 2. Configuración de WalletConnect (Requerido)
