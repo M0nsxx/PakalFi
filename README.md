@@ -195,7 +195,7 @@ const OracleNetwork = {
 
 ## 🔧 Additional Technical Integrations
 
-### For Monad Hackathon
+### For Monad Hackathon 2025
 - **0x Protocol**: Multi-currency swaps, gasless onboarding
 - **Reown AppKit**: Wallet abstraction, social login
 - **Envio**: Real-time analytics dashboard
@@ -315,31 +315,31 @@ We maintain all existing insurance products:
 - **Micro-Security**: Personal safety and theft
 - **Micro-Climate**: Weather and crop protection
 
-## 🔗 Smart Contracts Desplegados (Monad Testnet)
+## 🔗 Deployed Smart Contracts (Monad Testnet)
 
-### Contratos Principales
-Todos nuestros contratos están desplegados en el testnet de Monad (Chain ID: 10143):
+### Core Contracts
+All our contracts are deployed on Monad testnet (Chain ID: 10143):
 
-| Contrato | Dirección | Descripción |
-|----------|-----------|-------------|
-| **Oracle** | [`0xaF9bAD18233d180BB7F763A0be4A252bDf16c776`](https://explorer.monad.xyz/address/0xaF9bAD18233d180BB7F763A0be4A252bDf16c776) | Proveedor de datos externos para triggers paramétricos |
-| **Insurance Pool** | [`0x5b33069977773557D07023A73468fD16F83ebaea`](https://explorer.monad.xyz/address/0x5b33069977773557D07023A73468fD16F83ebaea) | Pool principal de seguros con liquidez multi-moneda |
-| **Policy NFT** | [`0xdaAb335F3B2dAc3e963809EE7dD8102A890870a3`](https://explorer.monad.xyz/address/0xdaAb335F3B2dAc3e963809EE7dD8102A890870a3) | NFTs que representan pólizas de seguro |
-| **Reinsurance Token** | [`0x47EdA49ea71f20738085f8774Be3f881A02354Af`](https://explorer.monad.xyz/address/0x47EdA49ea71f20738085f8774Be3f881A02354Af) | Tokenización de reaseguros |
-| **Gasless Payment Handler** | [`0xd5de766cdAAA47c9dB756c0f0c01d0F0494571D0`](https://explorer.monad.xyz/address/0xd5de766cdAAA47c9dB756c0f0c01d0F0494571D0) | Pagos sin gas para onboarding sin fricción |
-| **Savings Goal Handler** | [`0xE01592cE50FeFF1e9FB65888c66Dd5c6c4C85637`](https://explorer.monad.xyz/address/0xE01592cE50FeFF1e9FB65888c66Dd5c6c4C85637) | Gestión de metas de ahorro |
+| Contract | Address | Description |
+|----------|---------|-------------|
+| **Oracle** | [`0xaF9bAD18233d180BB7F763A0be4A252bDf16c776`](https://explorer.monad.xyz/address/0xaF9bAD18233d180BB7F763A0be4A252bDf16c776) | External data provider for parametric triggers |
+| **Insurance Pool** | [`0x5b33069977773557D07023A73468fD16F83ebaea`](https://explorer.monad.xyz/address/0x5b33069977773557D07023A73468fD16F83ebaea) | Main insurance pool with multi-currency liquidity |
+| **Policy NFT** | [`0xdaAb335F3B2dAc3e963809EE7dD8102A890870a3`](https://explorer.monad.xyz/address/0xdaAb335F3B2dAc3e963809EE7dD8102A890870a3) | NFTs representing insurance policies |
+| **Reinsurance Token** | [`0x47EdA49ea71f20738085f8774Be3f881A02354Af`](https://explorer.monad.xyz/address/0x47EdA49ea71f20738085f8774Be3f881A02354Af) | Reinsurance tokenization |
+| **Gasless Payment Handler** | [`0xd5de766cdAAA47c9dB756c0f0c01d0F0494571D0`](https://explorer.monad.xyz/address/0xd5de766cdAAA47c9dB756c0f0c01d0F0494571D0) | Gasless payments for frictionless onboarding |
+| **Savings Goal Handler** | [`0xE01592cE50FeFF1e9FB65888c66Dd5c6c4C85637`](https://explorer.monad.xyz/address/0xE01592cE50FeFF1e9FB65888c66Dd5c6c4C85637) | Savings goals management |
 
-### Características Implementadas
-- ✅ **Multi-Chain**: Soporte para múltiples blockchains
-- ✅ **Multi-Currency**: Múltiples monedas estables locales
-- ✅ **Regional Pools**: Pools de riesgo regionales
-- ✅ **Gasless Payments**: Pagos sin gas para mejor UX
-- ✅ **Savings Goals**: Metas de ahorro integradas
-- ✅ **Cross-Chain Messaging**: Mensajería entre cadenas
-- ✅ **SDG Tracking**: Seguimiento de Objetivos de Desarrollo Sostenible
-- ✅ **Parametric Triggers**: Triggers paramétricos automáticos
+### Implemented Features
+- ✅ **Multi-Chain**: Support for multiple blockchains
+- ✅ **Multi-Currency**: Multiple local stablecoins
+- ✅ **Regional Pools**: Regional risk pools
+- ✅ **Gasless Payments**: Gasless payments for better UX
+- ✅ **Savings Goals**: Integrated savings goals
+- ✅ **Cross-Chain Messaging**: Cross-chain messaging
+- ✅ **SDG Tracking**: Sustainable Development Goals tracking
+- ✅ **Parametric Triggers**: Automatic parametric triggers
 
-### Explorador de Monad
+### Monad Explorer
 - **Testnet Explorer**: [explorer.monad.xyz](https://explorer.monad.xyz)
 - **Chain ID**: 10143
 - **RPC URL**: `https://rpc.testnet.monad.xyz`
