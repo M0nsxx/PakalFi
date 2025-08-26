@@ -155,6 +155,7 @@ export function useWallet() {
         }
       }
     }
+    return
   }
 
   const switchToMonad = async () => {

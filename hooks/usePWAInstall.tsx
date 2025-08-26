@@ -137,5 +137,5 @@ export function usePWAInstall(): PWAInstallReturn {
     isInstalled,
     installPWA: isIOSDevice ? showIOSInstructions : installPWA,
     isIOS: isIOSDevice
-  }
+  } as PWAInstallReturn
 }
