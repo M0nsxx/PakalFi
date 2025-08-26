@@ -111,12 +111,10 @@ export function usePWAInstall() {
   }
 
   // For iOS devices, show instructions
-  const isIOS = () => {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent)
-  }
+  const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
   const showIOSInstructions = () => {
-    if (isIOS()) {
+    if (isIOSDevice) {
       alert(
         '🍎 Para instalar esta app en iOS:\n\n' +
         '1. Toca el botón "Compartir" ⤴️\n' +
@@ -128,9 +126,9 @@ export function usePWAInstall() {
   }
 
   return {
-    isInstallable: isInstallable || isIOS(),
+    isInstallable: isInstallable || isIOSDevice,
     isInstalled,
-    installPWA: isIOS() ? showIOSInstructions : installPWA,
-    isIOS: isIOS()
+    installPWA: isIOSDevice ? showIOSInstructions : installPWA,
+    isIOS: isIOSDevice
   }
 }
