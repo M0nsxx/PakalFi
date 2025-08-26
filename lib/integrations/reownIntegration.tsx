@@ -535,17 +535,36 @@ export function useReownInsurance() {
 
   useEffect(() => {
     const init = async () => {
-      const kit = initializeReownForInsurance();
-      if (kit) {
-        setAppKit(kit);
+      try {
+        console.log('🔧 Inicializando useReownInsurance...')
         
-        // For demo purposes, assume connected
-        setIsConnected(true);
-        setUserData({
-          id: 'demo-user',
-          email: 'demo@microinsurance.global',
-          name: 'Demo User'
-        });
+        // Intentar obtener el AppKit global primero
+        if (typeof window !== 'undefined' && (window as any).reownAppKit) {
+          console.log('✅ AppKit encontrado en window.reownAppKit')
+          setAppKit((window as any).reownAppKit)
+          setIsConnected(true)
+          setUserData({
+            id: 'demo-user',
+            email: 'demo@microinsurance.global',
+            name: 'Demo User'
+          })
+        } else {
+          console.log('⚠️ AppKit no encontrado en window, creando uno nuevo...')
+          const kit = initializeReownForInsurance();
+          if (kit) {
+            setAppKit(kit);
+            
+            // Para demo purposes, asumir conectado
+            setIsConnected(true);
+            setUserData({
+              id: 'demo-user',
+              email: 'demo@microinsurance.global',
+              name: 'Demo User'
+            });
+          }
+        }
+      } catch (error) {
+        console.error('❌ Error en useReownInsurance init:', error)
       }
     };
 
@@ -553,28 +572,59 @@ export function useReownInsurance() {
   }, []);
 
   const connect = async () => {
-    if (appKit) {
-      try {
-        const result = await appKit.open({ view: 'Connect' });
+    try {
+      console.log('🔗 useReownInsurance: Conectando...')
+      
+      const kit = appKit || (typeof window !== 'undefined' && (window as any).reownAppKit)
+      
+      if (kit) {
+        console.log('✅ useReownInsurance: AppKit encontrado, abriendo modal...')
+        const result = await kit.open({ 
+          view: 'Connect',
+          includeWalletIds: [
+            'c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96', // MetaMask
+            '4622a2b2d6af1c9844944291e5e7351a6aa24cd7b23099efac1b2fd875da31a0', // Trust
+            'fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa', // Coinbase
+          ]
+        });
+        
         if (result) {
+          console.log('✅ useReownInsurance: Conexión exitosa')
           setIsConnected(true);
           setUserData(result);
         }
-      } catch (error) {
-        console.error('Connection error:', error);
+      } else {
+        console.log('⚠️ useReownInsurance: No AppKit disponible')
       }
+    } catch (error) {
+      console.error('❌ useReownInsurance: Error de conexión:', error);
+      throw error;
     }
   };
 
   const disconnect = async () => {
-    if (appKit) {
-      try {
-        await appKit.disconnect();
+    try {
+      console.log('🔌 useReownInsurance: Desconectando...')
+      
+      const kit = appKit || (typeof window !== 'undefined' && (window as any).reownAppKit)
+      
+      if (kit) {
+        console.log('✅ useReownInsurance: AppKit encontrado, desconectando...')
+        await kit.disconnect();
         setIsConnected(false);
         setUserData(null);
-      } catch (error) {
-        console.error('Disconnection error:', error);
+        console.log('✅ useReownInsurance: Desconexión exitosa')
+      } else {
+        console.log('⚠️ useReownInsurance: No AppKit disponible para desconectar')
+        // Forzar desconexión local
+        setIsConnected(false);
+        setUserData(null);
       }
+    } catch (error) {
+      console.error('❌ useReownInsurance: Error de desconexión:', error);
+      // Forzar desconexión local en caso de error
+      setIsConnected(false);
+      setUserData(null);
     }
   };
 

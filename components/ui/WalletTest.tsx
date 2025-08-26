@@ -1,186 +1,177 @@
-// 'use client'
+'use client'
 
-// import { useState } from 'react'
-// import { motion } from 'framer-motion'
-// import { CheckCircle, XCircle, Loader2, Wallet, RefreshCw } from 'lucide-react'
-// import { useWallet } from '@/hooks/useWallet'
+import { useState } from 'react'
+import { useWallet } from '@/hooks/useWallet'
+import { Button } from './Button'
 
-// export function WalletTest() {
-//   const { wallet, connect, disconnect, switchChain, isLoading, error } = useWallet()
-//   const [testResults, setTestResults] = useState<{
-//     connection: boolean
-//     chain: boolean
-//     balance: boolean
-//   }>({
-//     connection: false,
-//     chain: false,
-//     balance: false
-//   })
-
-//   const runTests = async () => {
-//     setTestResults({
-//       connection: false,
-//       chain: false,
-//       balance: false
-//     })
-
-//     // Test 1: Connection
-//     if (wallet.isConnected) {
-//       setTestResults(prev => ({ ...prev, connection: true }))
-//     }
-
-//     // Test 2: Correct chain
-//     if (wallet.isCorrectChain) {
-//       setTestResults(prev => ({ ...prev, chain: true }))
-//     }
-
-//     // Test 3: Balance
-//     if (parseFloat(wallet.balance) > 0) {
-//       setTestResults(prev => ({ ...prev, balance: true }))
-//     }
-//   }
-
-//   const getTestStatus = (test: keyof typeof testResults) => {
-//     if (isLoading) return 'loading'
-//     return testResults[test] ? 'success' : 'error'
-//   }
-
-//   const getTestIcon = (test: keyof typeof testResults) => {
-//     const status = getTestStatus(test)
-//     switch (status) {
-//       case 'loading':
-//         return <Loader2 className="w-5 h-5 animate-spin" />
-//       case 'success':
-//         return <CheckCircle className="w-5 h-5 text-green-400" />
-//       case 'error':
-//         return <XCircle className="w-5 h-5 text-red-400" />
-//     }
-//   }
-
-//   return (
-//     <div className="max-w-2xl mx-auto p-8">
-//       <div className="text-center mb-8">
-//         <h2 className="text-3xl font-bold text-white mb-4">Wallet Test</h2>
-//         <p className="text-gray-300">
-//           Verify that your wallet is working correctly with MicroInsurance
-//         </p>
-//       </div>
-
-//       <div className="space-y-6">
-//         {/* Test Results */}
-//         <div className="bg-white/10 backdrop-blur rounded-2xl p-6">
-//           <h3 className="text-xl font-bold text-white mb-4">Test Results</h3>
-//           <div className="space-y-3">
-//             <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-//               <div className="flex items-center gap-3">
-//                 {getTestIcon('connection')}
-//                 <span className="text-white">Wallet Connection</span>
-//               </div>
-//               <span className={`text-sm font-medium ${
-//                 getTestStatus('connection') === 'success' ? 'text-green-400' : 'text-red-400'
-//               }`}>
-//                 {getTestStatus('connection') === 'success' ? 'Connected' : 'Not connected'}
-//               </span>
-//             </div>
-
-//             <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-//               <div className="flex items-center gap-3">
-//                 {getTestIcon('chain')}
-//                 <span className="text-white">Correct Network</span>
-//               </div>
-//               <span className={`text-sm font-medium ${
-//                 getTestStatus('chain') === 'success' ? 'text-green-400' : 'text-red-400'
-//               }`}>
-//                 {getTestStatus('chain') === 'success' ? 'Monad Testnet' : 'Wrong network'}
-//               </span>
-//             </div>
-
-//             <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-//               <div className="flex items-center gap-3">
-//                 {getTestIcon('balance')}
-//                 <span className="text-white">Balance</span>
-//               </div>
-//               <span className={`text-sm font-medium ${
-//                 getTestStatus('balance') === 'success' ? 'text-green-400' : 'text-red-400'
-//               }`}>
-//                 {wallet.balance} MONAD
-//               </span>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Actions */}
-//         <div className="flex flex-col sm:flex-row gap-4">
-//           {!wallet.isConnected ? (
-//             <motion.button
-//               whileHover={{ scale: 1.05 }}
-//               whileTap={{ scale: 0.95 }}
-//               onClick={connect}
-//               disabled={isLoading}
-//               className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-full font-bold hover:shadow-lg hover:shadow-green-500/25 transition-all disabled:opacity-50"
-//             >
-//               <Wallet className="w-5 h-5 mr-2" />
-//               Connect Wallet
-//             </motion.button>
-//           ) : (
-//             <>
-//               <motion.button
-//                 whileHover={{ scale: 1.05 }}
-//                 whileTap={{ scale: 0.95 }}
-//                 onClick={runTests}
-//                 className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-600 text-white px-6 py-3 rounded-full font-bold hover:shadow-lg hover:shadow-blue-500/25 transition-all"
-//               >
-//                 <RefreshCw className="w-5 h-5 mr-2" />
-//                 Run Tests
-//               </motion.button>
-
-//               {!wallet.isCorrectChain && (
-//                 <motion.button
-//                   whileHover={{ scale: 1.05 }}
-//                   whileTap={{ scale: 0.95 }}
-//                   onClick={switchChain}
-//                   disabled={isLoading}
-//                   className="flex-1 bg-gradient-to-r from-orange-500 to-red-600 text-white px-6 py-3 rounded-full font-bold hover:shadow-lg hover:shadow-orange-500/25 transition-all disabled:opacity-50"
-//                 >
-//                   Switch to Monad Testnet
-//                 </motion.button>
-//               )}
-
-//               <motion.button
-//                 whileHover={{ scale: 1.05 }}
-//                 whileTap={{ scale: 0.95 }}
-//                 onClick={disconnect}
-//                 className="flex-1 bg-gradient-to-r from-red-500 to-pink-600 text-white px-6 py-3 rounded-full font-bold hover:shadow-lg hover:shadow-red-500/25 transition-all"
-//               >
-//                 Disconnect
-//               </motion.button>
-//             </>
-//           )}
-//         </div>
-
-//         {/* Error Display */}
-//         {error && (
-//           <div className="bg-red-500/20 border border-red-500/30 rounded-xl p-4">
-//             <p className="text-red-400 text-sm">{error}</p>
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   )
-// }
-
-// Temporary component to avoid build errors
 export function WalletTest() {
+  const { 
+    isConnected, 
+    isConnecting, 
+    error, 
+    connectWallet, 
+    disconnectWallet, 
+    openWalletModal,
+    address,
+    userData,
+    appKit,
+    cleanupExpiredProposals
+  } = useWallet()
+  
+  const [testResults, setTestResults] = useState<string[]>([])
+
+  const addTestResult = (result: string) => {
+    setTestResults(prev => [...prev, `${new Date().toLocaleTimeString()}: ${result}`])
+  }
+
+  const testConnection = async () => {
+    addTestResult('🧪 Iniciando prueba de conexión...')
+    
+    try {
+      if (!isConnected) {
+        addTestResult('🔗 Intentando conectar wallet...')
+        await openWalletModal()
+        addTestResult('✅ Modal de wallet abierto')
+      } else {
+        addTestResult('✅ Wallet ya conectada')
+      }
+    } catch (error) {
+      addTestResult(`❌ Error: ${error instanceof Error ? error.message : 'Error desconocido'}`)
+    }
+  }
+
+  const testDisconnect = async () => {
+    addTestResult('🔌 Desconectando wallet...')
+    try {
+      await disconnectWallet()
+      addTestResult('✅ Wallet desconectada')
+    } catch (error) {
+      addTestResult(`❌ Error al desconectar: ${error instanceof Error ? error.message : 'Error desconocido'}`)
+    }
+  }
+
+  const testAppKitStatus = () => {
+    addTestResult('🔍 Verificando estado del AppKit...')
+    
+    if (appKit) {
+      addTestResult('✅ AppKit disponible')
+    } else {
+      addTestResult('❌ AppKit no disponible')
+    }
+    
+    if (typeof window !== 'undefined' && (window as any).reownAppKit) {
+      addTestResult('✅ AppKit global disponible')
+    } else {
+      addTestResult('❌ AppKit global no disponible')
+    }
+  }
+
+  const testCleanupProposals = () => {
+    addTestResult('🧹 Limpiando propuestas expiradas...')
+    try {
+      cleanupExpiredProposals()
+      addTestResult('✅ Propuestas expiradas limpiadas')
+    } catch (error) {
+      addTestResult(`❌ Error limpiando propuestas: ${error instanceof Error ? error.message : 'Error desconocido'}`)
+    }
+  }
+
   return (
-    <div className="max-w-2xl mx-auto p-8">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-white mb-4">Wallet Test</h2>
-        <p className="text-gray-300">
-          Verify that your wallet is working correctly with MicroInsurance
-        </p>
-      </div>
-      <div className="bg-white/10 backdrop-blur rounded-2xl p-6">
-        <p className="text-white text-center">Functionality temporarily disabled</p>
+    <div className="p-6 bg-gray-900 rounded-lg border border-gray-700">
+      <h3 className="text-lg font-semibold text-white mb-4">🧪 Prueba de Conexión Wallet</h3>
+      
+      <div className="space-y-4">
+        {/* Estado actual */}
+        <div className="bg-gray-800 p-4 rounded-lg">
+          <h4 className="text-sm font-medium text-gray-300 mb-2">Estado Actual:</h4>
+          <div className="space-y-1 text-sm">
+            <div className="flex items-center space-x-2">
+              <span className="text-gray-400">Conectado:</span>
+              <span className={isConnected ? 'text-green-400' : 'text-red-400'}>
+                {isConnected ? '✅ Sí' : '❌ No'}
+              </span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-gray-400">Conectando:</span>
+              <span className={isConnecting ? 'text-yellow-400' : 'text-gray-400'}>
+                {isConnecting ? '🔄 Sí' : 'No'}
+              </span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-gray-400">AppKit:</span>
+              <span className={appKit ? 'text-green-400' : 'text-red-400'}>
+                {appKit ? '✅ Disponible' : '❌ No disponible'}
+              </span>
+            </div>
+            {address && (
+              <div className="flex items-center space-x-2">
+                <span className="text-gray-400">Dirección:</span>
+                <span className="text-blue-400 font-mono text-xs">
+                  {address.slice(0, 6)}...{address.slice(-4)}
+                </span>
+              </div>
+            )}
+            {userData && (
+              <div className="flex items-center space-x-2">
+                <span className="text-gray-400">Usuario:</span>
+                <span className="text-green-400">{userData.name}</span>
+              </div>
+            )}
+            {error && (
+              <div className="flex items-center space-x-2">
+                <span className="text-gray-400">Error:</span>
+                <span className="text-red-400 text-xs">{error.toString()}</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Botones de prueba */}
+        <div className="flex flex-wrap gap-3">
+          <Button
+            onClick={testConnection}
+            disabled={isConnecting}
+            className="bg-green-600 hover:bg-green-700 text-white"
+          >
+            {isConnecting ? '🔄 Conectando...' : '🔗 Probar Conexión'}
+          </Button>
+          
+          <Button
+            onClick={testDisconnect}
+            disabled={!isConnected || isConnecting}
+            className="bg-red-600 hover:bg-red-700 text-white"
+          >
+            🔌 Desconectar
+          </Button>
+          
+          <Button
+            onClick={testAppKitStatus}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
+          >
+            🔍 Verificar AppKit
+          </Button>
+          
+          <Button
+            onClick={testCleanupProposals}
+            className="bg-orange-600 hover:bg-orange-700 text-white"
+          >
+            🧹 Limpiar Propuestas
+          </Button>
+        </div>
+
+        {/* Resultados de pruebas */}
+        {testResults.length > 0 && (
+          <div className="bg-gray-800 p-4 rounded-lg">
+            <h4 className="text-sm font-medium text-gray-300 mb-2">Resultados de Pruebas:</h4>
+            <div className="space-y-1 max-h-40 overflow-y-auto">
+              {testResults.map((result, index) => (
+                <div key={index} className="text-xs text-gray-400 font-mono">
+                  {result}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

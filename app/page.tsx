@@ -7,6 +7,7 @@ import { Shield, Heart, Cloud, Car, ChevronRight, Users, TrendingUp, Zap, CheckC
 import { PremiumCalculator } from '@/components/insurance/PremiumCalculator'
 import { RiskAssessment } from '@/components/insurance/RiskAssessment'
 import { ReownDemo } from '@/components/ui/ReownDemo'
+import { WalletTest } from '@/components/ui/WalletTest'
 
 export default function Landing() {
   const [isMounted, setIsMounted] = useState(false)
@@ -451,6 +452,24 @@ export default function Landing() {
 
       {/* Reown AppKit Demo */}
       <ReownDemo />
+
+      {/* Wallet Test Section */}
+      <section className="py-20 bg-gray-800">
+        <div className="container mx-auto px-4">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl font-bold text-center text-white mb-12"
+          >
+            🧪 Prueba de Conexión Wallet
+          </motion.h2>
+          
+          <div className="max-w-2xl mx-auto">
+            <WalletTest />
+          </div>
+        </div>
+      </section>
 
       {/* Community Stats */}
       <section className="py-20 bg-gray-800">
