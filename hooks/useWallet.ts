@@ -111,7 +111,7 @@ export function useWallet() {
     }
   }
 
-  const openWalletModal = async () => {
+  const openWalletModal = async (): Promise<void> => {
     try {
       console.log('🚀 Abriendo modal de Reown AppKit...')
       
